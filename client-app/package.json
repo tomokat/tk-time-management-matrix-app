@@ -1,0 +1,47 @@
+{
+  "name": "tk-time-management-matrix-components",
+  "version": "1.0.0",
+  "description": "TK Time Management Matrix Components",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/tk-time-management-matrix-components/tk-time-management-matrix-components.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/<path-to-your-github-repo>"
+  },
+  "files": [
+    "dist/",
+    "loader/",
+    "www/shoelace/"
+  ],
+  "scripts": {
+    "build": "stencil build --docs",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "generate": "stencil generate"
+  },
+  "dependencies": {
+    "@shoelace-style/shoelace": "^2.0.0-beta.83",
+    "@stencil/core": "^2.13.0",
+    "chip-input": "^0.2.17",
+    "fuzzyset": "^1.0.7",
+    "hotkeys-js": "^3.10.1"
+  },
+  "devDependencies": {
+    "@stencil/store": "^2.0.1",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^18.11.9",
+    "jest": "^27.4.5",
+    "jest-cli": "^27.4.5",
+    "puppeteer": "^10.0.0",
+    "rollup-plugin-dotenv": "^0.4.1",
+    "workbox-build": "^4.3.1"
+  },
+  "license": "MIT"
+}
