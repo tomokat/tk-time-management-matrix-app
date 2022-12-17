@@ -1,5 +1,5 @@
 import { SlInput } from '@shoelace-style/shoelace';
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from '@stencil/core';
 
 import state from '../../../stores/tk-app-store';
 
@@ -18,6 +18,11 @@ export class TaskListItem {
   @State() tempColor;
 
   @Event() taskItemUpdated: EventEmitter;
+
+  @Watch('taskItem')
+  taskItemChangeHanlder() {
+    this.tempColor = this.taskItem.color;
+  }
 
   @Listen('sl-change')
   slChangeHandler(event) {
@@ -102,7 +107,7 @@ export class TaskListItem {
             onClick={(event)=>this.preventEventBubble(event)}
             onBlur={(event)=>this.updateTaskItem(event)}>
           </sl-input>
-          <sl-color-picker opacity label="Select a color"
+          <sl-color-picker value={this.tempColor} label="Select a color"
             onClick={(event)=>this.preventEventBubble(event)}></sl-color-picker>
         </div>    
       )

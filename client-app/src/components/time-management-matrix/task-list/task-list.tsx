@@ -54,6 +54,7 @@ export class TaskList {
     
     this.taskItemDrop.emit({
       name: taskItem.name,
+      color: taskItem.color,
       zoneFrom: taskItem.zone,
       zoneTo: undefined
     });

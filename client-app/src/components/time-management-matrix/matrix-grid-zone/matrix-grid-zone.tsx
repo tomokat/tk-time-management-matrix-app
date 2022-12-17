@@ -31,20 +31,6 @@ export class MatrixGridZone {
     this.taskItemList = [...zoneItemList];
   }
 
-  handleDragStart(event) {
-    console.log(`dragging start from matrix-grid-zone`);
-    let taskItemElement = event.target.shadowRoot.querySelector('.taskListItem');
-    if(!taskItemElement) {
-      return;
-    }
-    let taskName = taskItemElement.innerHTML;
-    event.dataTransfer.setData('taskItem', JSON.stringify({
-      name: taskName,
-      zone: this.zoneNumber
-    }));
-    event.stopPropagation();
-  }
-
   handleDragOver(event) {
     event.preventDefault();
   }
@@ -56,6 +42,7 @@ export class MatrixGridZone {
 
     this.taskItemDrop.emit({
       name: taskItem.name,
+      color: taskItem.color,
       zoneFrom: taskItem.zone,
       zoneTo: this.zoneNumber
     });
@@ -73,7 +60,7 @@ export class MatrixGridZone {
     return (
       <Host>
         <div class="gridZone"
-          onDragStart={(event)=>this.handleDragStart(event)}
+          //onDragStart={(event)=>this.handleDragStart(event)}
           onDragOver={(event)=>this.handleDragOver(event)}
           onDrop={(event)=>this.handleDrop(event)}>
             {this.renderTaskItemList()}

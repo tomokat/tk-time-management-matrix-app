@@ -106,10 +106,11 @@ export class AppRoot {
   @Listen('taskItemDrop')
   async taskItemDropHandler(event) {
     let taskName = event.detail.name;
+    let taskColor = event.detail.color;
     let taskZoneFrom = event.detail.zoneFrom;
     let taskZoneTo = event.detail.zoneTo;
 
-    console.log(`taskItemDropHanlder called for ${taskName} moving from ${taskZoneFrom} to ${taskZoneTo}`);
+    console.log(`taskItemDropHanlder called for ${taskName} of color ${taskColor} moving from ${taskZoneFrom} to ${taskZoneTo}`);
 
     if(taskZoneFrom === taskZoneTo) {
       console.log(`drag & drop from same place, nothing to do`);
@@ -119,6 +120,7 @@ export class AppRoot {
     state.taskItemList.map(taskItem => {
       if(taskItem.name === taskName) {
         taskItem.zone = taskZoneTo;
+        taskItem.color = taskColor;
       }
     });
 
