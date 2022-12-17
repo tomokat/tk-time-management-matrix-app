@@ -1,4 +1,5 @@
-import { Component, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
+import { SlInput } from '@shoelace-style/shoelace';
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from '@stencil/core';
 
 import state from '../../../stores/tk-app-store';
 
@@ -9,11 +10,23 @@ import state from '../../../stores/tk-app-store';
 })
 export class TaskListItem {
 
-  @Prop() taskItem;
+  @Element() el;
+
+  @Prop({mutable: true}) taskItem;
 
   @State() editable = false;
+  @State() tempColor;
 
   @Event() taskItemUpdated: EventEmitter;
+
+  @Listen('sl-change')
+  slChangeHandler(event) {
+    if(event.path[0].tagName.toLowerCase() === 'sl-color-picker') {
+      //this.taskItem.color = event.path[0].value;
+      this.tempColor = event.path[0].value;
+      //this.taskItem = {...this.taskItem};
+    }
+  }
 
   componentWillLoad() {
     
@@ -32,8 +45,27 @@ export class TaskListItem {
     this.editable = flag;
   }
 
+  makeEditable() {
+    if(!this.editable) {
+      //this.setEditable(false);
+      console.log(`makeEditable() called`);
+      this.editable = true;
+    }
+  }
+
+  updateTaskItemColor(event) {
+    console.log(`updateTaskItemColor() get called`);
+    this.taskItem.color = this.tempColor;
+    this.setEditable(false);
+    event.stopPropagation();
+  }
+
+  preventEventBubble(event) {
+    event.stopPropagation();
+  }
+
   updateTaskItem(event) {
-    let text = event.target.innerHTML.trim();
+    let text = event.target.value.trim();
     if(text !== this.taskItem.name) {
       
       console.log(`task name change detected! ${text}`);
@@ -48,6 +80,44 @@ export class TaskListItem {
     this.setEditable(false);
   }
 
+  getStyleForTaskItem() {
+    if(!this.taskItem.color) {
+      return {};
+    }
+    return {backgroundColor: this.tempColor}
+  }
+
+  renderTaskItemBody() {
+    if(this.editable) {
+      return (
+        <div onClick={(event)=>{this.updateTaskItemColor(event)}}>
+          <sl-input value={this.taskItem.name}
+            onClick={(event)=>this.preventEventBubble(event)}
+            onBlur={(event)=>this.updateTaskItem(event)}>
+          </sl-input>
+          <sl-color-picker opacity label="Select a color"
+            onClick={(event)=>this.preventEventBubble(event)}></sl-color-picker>
+        </div>    
+      )
+    } else {
+      return (
+        this.taskItem.name
+      )
+    }
+  }
+
+  renderAsCard() {
+    return (
+      <div class="taskListItem" draggable={true}
+        style={this.getStyleForTaskItem()}
+        onClick={()=>this.makeEditable()}
+        onDragStart={(event)=>this.handleDragStart(event)}
+        onDragOver={(event)=>this.handleDragOver(event)}>
+        {this.renderTaskItemBody()}
+      </div>
+    );
+  }
+
   render() {
     if(!this.taskItem) {
       return;
@@ -55,12 +125,7 @@ export class TaskListItem {
 
     return (
       <Host>
-        <div class="taskListItem" draggable={true} contentEditable={this.editable}
-        onClick={()=>this.setEditable(true)} onBlur={(event)=>this.updateTaskItem(event)}
-        onDragStart={(event)=>this.handleDragStart(event)}
-        onDragOver={(event)=>this.handleDragOver(event)}>
-          {this.taskItem.name}
-        </div>
+        {this.renderAsCard()}
       </Host>
     );
   }

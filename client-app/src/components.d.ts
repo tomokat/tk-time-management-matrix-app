@@ -22,6 +22,8 @@ export namespace Components {
     interface TkTaskList {
         "reloadTaskList": () => Promise<void>;
     }
+    interface TkTaskListBar {
+    }
     interface TkTaskListItem {
         "taskItem": any;
     }
@@ -41,6 +43,10 @@ export interface TkMatrixGridZoneCustomEvent<T> extends CustomEvent<T> {
 export interface TkTaskListCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLTkTaskListElement;
+}
+export interface TkTaskListBarCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLTkTaskListBarElement;
 }
 export interface TkTaskListItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -83,6 +89,12 @@ declare global {
         prototype: HTMLTkTaskListElement;
         new (): HTMLTkTaskListElement;
     };
+    interface HTMLTkTaskListBarElement extends Components.TkTaskListBar, HTMLStencilElement {
+    }
+    var HTMLTkTaskListBarElement: {
+        prototype: HTMLTkTaskListBarElement;
+        new (): HTMLTkTaskListBarElement;
+    };
     interface HTMLTkTaskListItemElement extends Components.TkTaskListItem, HTMLStencilElement {
     }
     var HTMLTkTaskListItemElement: {
@@ -96,6 +108,7 @@ declare global {
         "tk-matrix-grid": HTMLTkMatrixGridElement;
         "tk-matrix-grid-zone": HTMLTkMatrixGridZoneElement;
         "tk-task-list": HTMLTkTaskListElement;
+        "tk-task-list-bar": HTMLTkTaskListBarElement;
         "tk-task-list-item": HTMLTkTaskListItemElement;
     }
 }
@@ -118,6 +131,9 @@ declare namespace LocalJSX {
     interface TkTaskList {
         "onTaskItemDrop"?: (event: TkTaskListCustomEvent<any>) => void;
     }
+    interface TkTaskListBar {
+        "onTaskItemUpdated"?: (event: TkTaskListBarCustomEvent<any>) => void;
+    }
     interface TkTaskListItem {
         "onTaskItemUpdated"?: (event: TkTaskListItemCustomEvent<any>) => void;
         "taskItem"?: any;
@@ -129,6 +145,7 @@ declare namespace LocalJSX {
         "tk-matrix-grid": TkMatrixGrid;
         "tk-matrix-grid-zone": TkMatrixGridZone;
         "tk-task-list": TkTaskList;
+        "tk-task-list-bar": TkTaskListBar;
         "tk-task-list-item": TkTaskListItem;
     }
 }
@@ -142,6 +159,7 @@ declare module "@stencil/core" {
             "tk-matrix-grid": LocalJSX.TkMatrixGrid & JSXBase.HTMLAttributes<HTMLTkMatrixGridElement>;
             "tk-matrix-grid-zone": LocalJSX.TkMatrixGridZone & JSXBase.HTMLAttributes<HTMLTkMatrixGridZoneElement>;
             "tk-task-list": LocalJSX.TkTaskList & JSXBase.HTMLAttributes<HTMLTkTaskListElement>;
+            "tk-task-list-bar": LocalJSX.TkTaskListBar & JSXBase.HTMLAttributes<HTMLTkTaskListBarElement>;
             "tk-task-list-item": LocalJSX.TkTaskListItem & JSXBase.HTMLAttributes<HTMLTkTaskListItemElement>;
         }
     }

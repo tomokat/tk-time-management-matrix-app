@@ -43,7 +43,10 @@ export class TaskList {
     noZoneItemList = noZoneItemList.sort((a,b)=>a.name>b.name?1:-1);
     this.taskItemList = [...noZoneItemList];
   }
-
+  
+  handleDragOver(event) {
+    event.preventDefault();
+  }
   handleDrop(event) {
     let taskItemString = event.dataTransfer.getData('taskItem');
     console.log(`dropped ${taskItemString}`);
@@ -73,7 +76,9 @@ export class TaskList {
 
     return (
       <Host>
-        <div onDrop={(event)=>this.handleDrop(event)}>
+        <div class="taskList"
+          onDragOver={(event)=>this.handleDragOver(event)} 
+          onDrop={(event)=>this.handleDrop(event)}>
           {this.renderTaskItemList()}
         </div>
       </Host>

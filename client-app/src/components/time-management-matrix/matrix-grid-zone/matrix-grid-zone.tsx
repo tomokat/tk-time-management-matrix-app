@@ -33,7 +33,11 @@ export class MatrixGridZone {
 
   handleDragStart(event) {
     console.log(`dragging start from matrix-grid-zone`);
-    let taskName = event.target.shadowRoot.querySelector('.taskListItem').innerHTML;
+    let taskItemElement = event.target.shadowRoot.querySelector('.taskListItem');
+    if(!taskItemElement) {
+      return;
+    }
+    let taskName = taskItemElement.innerHTML;
     event.dataTransfer.setData('taskItem', JSON.stringify({
       name: taskName,
       zone: this.zoneNumber

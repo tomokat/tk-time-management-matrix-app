@@ -209,6 +209,7 @@ export class AppRoot {
           style={{zIndex: '3', width:'300px', fontWeight:'bold'}} id="mySidebar"><br/>
           <h3 class="w3-center" style={{padding: '5px'}}>{this.getTitle()}</h3>
           <div style={{padding:'5px'}}>
+            <tk-task-list-bar></tk-task-list-bar>
             <tk-add-task-item></tk-add-task-item>
             <tk-task-list></tk-task-list>
           </div>
@@ -226,7 +227,7 @@ export class AppRoot {
 
         <div class="w3-main app-main" style={{marginLeft:'300px'}}> 
           <div class="w3-hide-large" style={{marginTop:'83px'}}></div>
-          <div class="tk-bookmark-container" style={{padding: '5px'}}>
+          <div class="tk-main-container" style={{padding: '5px'}}>
             <tk-matrix-grid></tk-matrix-grid>
           </div>
         </div>
