@@ -30,14 +30,14 @@ export class TaskList {
       {name: 'second'},
       {name: 'third'},
       {name: 'fourth'},
-      {name: 'Test', zone: 1},
+      {name: 'Test', zone: 1, color: '#b21f1fff'},
       {name: 'Toast', zone: 1},
       {name: 'Apple', zone: 2},
       {name: 'Orange', zone: 2},
-      {name: 'Banana', zone: 2},
+      {name: 'Banana', zone: 2, color: '#8b572aff'},
       {name: 'Soccer', zone: 3},
       {name: 'Tennis', zone: 3},
-      {name: 'Game', zone: 4}
+      {name: 'Game', zone: 4, color: '#7ed321ff'}
     ];
     let noZoneItemList = state.taskItemList.filter(item => !item.zone);
     noZoneItemList = noZoneItemList.sort((a,b)=>a.name>b.name?1:-1);

@@ -8,3 +8,25 @@
   background-color:#333;
   min-height: 300px;
 }
+
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@-moz-keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.showHighlight {
+  background-color: green;
+  /* --webkit-animation: fadein 3s ease-in alternate infinite;
+  --moz-animation: fadein 3s ease-in alternate infinite;
+  animation: fadein 3s ease-in alternate infinite; */
+}

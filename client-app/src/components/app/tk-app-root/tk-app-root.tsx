@@ -47,6 +47,51 @@ export class AppRoot {
     this.authenticated = true;
   }
 
+  @Listen('bulkAddDialogClosed')
+  bulkAddDialogClosedHandler() {
+    this.clearAllHighlight();
+  }
+
+  @Listen('targetZoneUpdated')
+  async targetZoneUpdatedHandler(event) {
+    let targetZone = event.detail;
+    console.log(`(listener) target zone: ${targetZone}`);
+    this.clearAllHighlight();
+    this.highlightTargetZone(targetZone);
+  }
+
+  clearAllHighlight() {
+    let itemListElement = document.querySelector('tk-task-list').shadowRoot.querySelector('.taskList');
+    if(itemListElement) {
+      itemListElement.classList.remove('showHighlight');
+    }
+    let matrixZoneList = document.querySelector('tk-matrix-grid').shadowRoot.querySelectorAll('tk-matrix-grid-zone');
+    for(let i = 0; i < matrixZoneList.length; i++) {
+      let matrixZoneElement = matrixZoneList[i];
+      if(matrixZoneElement) {
+        let targetZoneElement = matrixZoneElement.shadowRoot.querySelector('.gridZone');
+        if(targetZoneElement) {
+          targetZoneElement.classList.remove('showHighlight');
+        }
+      }
+    }
+  }
+
+  highlightTargetZone(targetZone) {
+    if(!targetZone) {
+      let itemListElement = document.querySelector('tk-task-list').shadowRoot.querySelector('.taskList');
+      if(itemListElement) {
+        itemListElement.classList.add('showHighlight');
+      }
+    } else {
+      let matrixZoneList = document.querySelector('tk-matrix-grid').shadowRoot.querySelectorAll('tk-matrix-grid-zone');
+      let targetZoneElement = matrixZoneList[targetZone-1].shadowRoot.querySelector('.gridZone');
+      if(targetZoneElement) {
+        targetZoneElement.classList.add('showHighlight');
+      }
+    }
+  }
+
   @Listen('addTaskItemSuccess')
   async addTaskItemSuccessHandler() {
     this.callReloadTaskList();

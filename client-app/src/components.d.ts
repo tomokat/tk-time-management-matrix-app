@@ -132,6 +132,8 @@ declare namespace LocalJSX {
         "onTaskItemDrop"?: (event: TkTaskListCustomEvent<any>) => void;
     }
     interface TkTaskListBar {
+        "onBulkAddDialogClosed"?: (event: TkTaskListBarCustomEvent<any>) => void;
+        "onTargetZoneUpdated"?: (event: TkTaskListBarCustomEvent<any>) => void;
         "onTaskItemUpdated"?: (event: TkTaskListBarCustomEvent<any>) => void;
     }
     interface TkTaskListItem {

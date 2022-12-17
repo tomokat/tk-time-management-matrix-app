@@ -1,5 +1,5 @@
 import { SlDialog, SlTextarea } from '@shoelace-style/shoelace';
-import { Component, Host, h, Element, Event, EventEmitter, State } from '@stencil/core';
+import { Component, Host, h, Element, Event, EventEmitter, Listen, State } from '@stencil/core';
 
 import state from '../../../stores/tk-app-store';
 
@@ -13,15 +13,32 @@ export class TaskListBar {
   @Element() el;
 
   @Event() taskItemUpdated: EventEmitter;
+  @Event() targetZoneUpdated: EventEmitter;
+  @Event() bulkAddDialogClosed: EventEmitter;
 
   @State() targetZone;
   @State() bulkAddData;
 
+  @Listen('sl-hide')
+  handleSlHide(event) {
+    if(event.path[0].tagName.toLowerCase() === 'sl-dialog') {
+      console.log(`sl-hide get caught`);
+      this.bulkAddDialogClosed.emit(this.targetZone);
+    }
+  }
+
+  @Listen('sl-show')
+  handleSlShow() {
+    //this.targetZoneUpdated.emit(this.targetZone);
+  }
+
   toggleBulkAddModal(open: boolean) {
     const dialog = this.el.shadowRoot.querySelector('.bulk-add-dialog') as SlDialog;
     if(open) {
+      this.targetZoneUpdated.emit(this.targetZone);
       dialog.show();
     } else {
+      this.bulkAddDialogClosed.emit(this.targetZone);
       dialog.hide();
     }
   }
@@ -67,6 +84,7 @@ export class TaskListBar {
 
   updateTargetZone(newZone) {
     this.targetZone = newZone;
+    this.targetZoneUpdated.emit(newZone);
   }
 
   renderZoneGroup() {

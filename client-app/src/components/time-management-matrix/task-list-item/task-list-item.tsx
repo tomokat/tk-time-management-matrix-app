@@ -29,7 +29,7 @@ export class TaskListItem {
   }
 
   componentWillLoad() {
-    
+    this.tempColor = this.taskItem.color;
   }
 
   handleDragStart(event) {
@@ -56,6 +56,13 @@ export class TaskListItem {
   updateTaskItemColor(event) {
     console.log(`updateTaskItemColor() get called`);
     this.taskItem.color = this.tempColor;
+
+    state.taskItemList.map(taskItem => {
+      if(taskItem.name === this.taskItem.name) {
+        taskItem.color = this.taskItem.color
+      }
+    });
+
     this.setEditable(false);
     event.stopPropagation();
   }
