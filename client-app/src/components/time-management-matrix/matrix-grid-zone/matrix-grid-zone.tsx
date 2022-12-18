@@ -60,7 +60,7 @@ export class MatrixGridZone {
   }
 
   clearAllEditWithinZone(event) {
-    console.log(`clearAllEditWithinZone() get called`);
+    console.log(`clearAllEditWithinZone() get called with ${event}`);
 
     let taskListItems = this.el.shadowRoot.querySelectorAll('tk-task-list-item');
     console.log(`found ${taskListItems.length} items within zone ${this.zoneNumber}`);

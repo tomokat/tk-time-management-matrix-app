@@ -20,6 +20,19 @@
 | `taskItemUpdated`       |             | `CustomEvent<any>` |
 
 
+## Methods
+
+### `clearEdit() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Dependencies
 
 ### Used by
