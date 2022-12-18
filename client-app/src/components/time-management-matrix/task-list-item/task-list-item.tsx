@@ -1,4 +1,3 @@
-import { SlInput } from '@shoelace-style/shoelace';
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from '@stencil/core';
 
 import state from '../../../stores/tk-app-store';
