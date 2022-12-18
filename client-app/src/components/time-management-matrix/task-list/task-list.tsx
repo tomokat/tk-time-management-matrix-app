@@ -19,27 +19,24 @@ export class TaskList {
 
   @Method()
   async reloadTaskList() {
-    let noZoneItemList = state.taskItemList.filter(item => !item.zone);
-    noZoneItemList = noZoneItemList.sort((a,b)=>a.name>b.name?1:-1);
-    this.taskItemList = [...noZoneItemList];
+    this.getTaskItemData();
   }
 
-  getTaskItemData() {
-    state.taskItemList = [
-      {name: 'first'},
-      {name: 'second'},
-      {name: 'third'},
-      {name: 'fourth'},
-      {name: 'Test', zone: 1, color: '#b21f1fff'},
-      {name: 'Toast', zone: 1},
-      {name: 'Apple', zone: 2},
-      {name: 'Orange', zone: 2},
-      {name: 'Banana', zone: 2, color: '#8b572aff'},
-      {name: 'Soccer', zone: 3},
-      {name: 'Tennis', zone: 3},
-      {name: 'Game', zone: 4, color: '#7ed321ff'}
-    ];
-    let noZoneItemList = state.taskItemList.filter(item => !item.zone);
+  getDataUrl() {
+    if(state.user.email) {
+      return `${state.timeManagementMatrixApi}/task-item/user/${state.user.email}`;
+    }
+    return `${state.timeManagementMatrixApi}/task-item/user/guest`;
+  }
+
+  async getTaskItemData() {
+    let response = await fetch(this.getDataUrl());
+    let json = await response.json();
+
+    state.taskItemList = json;
+    this.taskItemList = [...json];
+
+    let noZoneItemList = state.taskItemList.filter(item => item.zone === 0);
     noZoneItemList = noZoneItemList.sort((a,b)=>a.name>b.name?1:-1);
     this.taskItemList = [...noZoneItemList];
   }
@@ -53,10 +50,11 @@ export class TaskList {
     let taskItem = JSON.parse(taskItemString);
     
     this.taskItemDrop.emit({
+      _id: taskItem._id,
       name: taskItem.name,
       color: taskItem.color,
       zoneFrom: taskItem.zone,
-      zoneTo: undefined
+      zoneTo: 0
     });
   }
 

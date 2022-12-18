@@ -52,6 +52,12 @@ export class AppRoot {
     this.clearAllHighlight();
   }
 
+  @Listen('deleteTaskItemSuccess')
+  async deleteTaskItemSuccessHandler(event) {
+    let taskZone = event.detail.zone;
+    this.updateZone(taskZone);
+  }
+
   @Listen('targetZoneUpdated')
   async targetZoneUpdatedHandler(event) {
     let targetZone = event.detail;
@@ -78,7 +84,7 @@ export class AppRoot {
   }
 
   highlightTargetZone(targetZone) {
-    if(!targetZone) {
+    if(targetZone === 0 || !targetZone) {
       let itemListElement = document.querySelector('tk-task-list').shadowRoot.querySelector('.taskList');
       if(itemListElement) {
         itemListElement.classList.add('showHighlight');
@@ -100,11 +106,13 @@ export class AppRoot {
   @Listen('taskItemUpdated')
   async taskItemUpdatedHandler(event) {
     let taskZone = event.detail.zone;
+    this.updateTaskItemDBInstance(event.detail);
     this.updateZone(taskZone);
   }
 
   @Listen('taskItemDrop')
   async taskItemDropHandler(event) {
+    let taskId = event.detail._id;
     let taskName = event.detail.name;
     let taskColor = event.detail.color;
     let taskZoneFrom = event.detail.zoneFrom;
@@ -118,14 +126,29 @@ export class AppRoot {
     }
 
     state.taskItemList.map(taskItem => {
-      if(taskItem.name === taskName) {
+      if(taskItem._id === taskId) {
         taskItem.zone = taskZoneTo;
         taskItem.color = taskColor;
+
+        //let taskItemData = JSON.parse(event.detail);
+        this.updateTaskItemDBInstance(taskItem);
       }
     });
 
     this.updateZone(taskZoneFrom);
     this.updateZone(taskZoneTo);
+  }
+
+  async updateTaskItemDBInstance(taskItemData) {
+    await fetch(`${state.timeManagementMatrixApi}/task-item/${taskItemData._id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(taskItemData)
+    }).then(()=> {
+      // do something here
+    });
   }
 
   updateZone(zone) {
@@ -253,7 +276,7 @@ export class AppRoot {
 
         {/* Sidebar/menu */}
         <nav class="w3-sidebar w3-bar-block w3-white w3-animate-left w3-text-grey w3-collapse w3-top"
-          style={{zIndex: '3', width:'300px', fontWeight:'bold'}} id="mySidebar"><br/>
+          style={{zIndex: '3', fontWeight:'bold'}} id="mySidebar"><br/>
           <h3 class="w3-center" style={{padding: '5px'}}>{this.getTitle()}</h3>
           <div style={{padding:'5px'}}>
             <tk-task-list-bar></tk-task-list-bar>

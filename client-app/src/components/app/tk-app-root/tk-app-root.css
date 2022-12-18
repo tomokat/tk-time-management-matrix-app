@@ -1,5 +1,6 @@
 
 * {
+  --sidemenu-width: 300px;
   --footer-height: 50px;
   --footer-height-buffer: 20px;
   box-sizing: border-box;
@@ -77,6 +78,7 @@ header {
 }
 
 nav.w3-sidebar {
+  width: var(--sidemenu-width);
   max-height: calc(100vh - var(--footer-height));
 }
 

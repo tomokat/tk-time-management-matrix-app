@@ -137,6 +137,7 @@ declare namespace LocalJSX {
         "onTaskItemUpdated"?: (event: TkTaskListBarCustomEvent<any>) => void;
     }
     interface TkTaskListItem {
+        "onDeleteTaskItemSuccess"?: (event: TkTaskListItemCustomEvent<any>) => void;
         "onTaskItemUpdated"?: (event: TkTaskListItemCustomEvent<any>) => void;
         "taskItem"?: any;
     }

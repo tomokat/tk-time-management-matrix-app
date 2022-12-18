@@ -16,7 +16,8 @@ export class TaskListBar {
   @Event() targetZoneUpdated: EventEmitter;
   @Event() bulkAddDialogClosed: EventEmitter;
 
-  @State() targetZone;
+  @State() expanded;
+  @State() targetZone = 0;
   @State() bulkAddData;
 
   @Listen('sl-hide')
@@ -47,6 +48,25 @@ export class TaskListBar {
     return !this.bulkAddData || !this.bulkAddData.trim();
   }
 
+  addNewTaskItem(newTaskName, newTaskZone) {
+    //state.taskItemList.push(newTaskItem);
+    let requestData = {
+      name: newTaskName,
+      zone: newTaskZone,
+      user: state.user.email
+    };
+
+    fetch(`${state.timeManagementMatrixApi}/task-item`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    }).then((res)=> {
+      console.log(`Successfully added label! ${JSON.stringify(res.json())}`);
+    });
+  }
+
   bulkAddTaskItem() {
     if(!this.bulkAddData) {
       return;
@@ -59,6 +79,7 @@ export class TaskListBar {
         name: item,
         zone: this.targetZone
       });
+      this.addNewTaskItem(item, this.targetZone);
     });
 
     this.taskItemUpdated.emit({
@@ -87,11 +108,21 @@ export class TaskListBar {
     this.targetZoneUpdated.emit(newZone);
   }
 
+  toggleExpanded() {
+    this.expanded = !this.expanded;
+    let sidemenuWidth = '300px';
+    if(this.expanded) {
+      sidemenuWidth = '1000px';
+    }
+    let sidemenuElement = document.querySelector('nav.w3-sidebar') as HTMLElement;
+    sidemenuElement.style.setProperty('--sidemenu-width', sidemenuWidth);
+  }
+
   renderZoneGroup() {
     return (
       <sl-button-group label="Alignment">
-        <sl-button variant={this.getVariantForButton(undefined)}
-          onClick={()=>this.updateTargetZone(undefined)}>None</sl-button>
+        <sl-button variant={this.getVariantForButton(0)}
+          onClick={()=>this.updateTargetZone(0)}>None</sl-button>
         <sl-button variant={this.getVariantForButton(1)}
           onClick={()=>this.updateTargetZone(1)}>1</sl-button>
         <sl-button variant={this.getVariantForButton(2)}
@@ -132,6 +163,12 @@ export class TaskListBar {
       <sl-tooltip content="Bulk add" style={{fontSize:'32px'}} >
         <sl-icon-button name="folder-plus" label="Bulk Add"
           onClick={()=>this.toggleBulkAddModal(true)}></sl-icon-button>
+        {this.expanded
+          ? <sl-icon-button name="arrows-collapse"
+              onClick={()=>this.toggleExpanded()}></sl-icon-button>
+          : <sl-icon-button name="arrows-expand"
+              onClick={()=>this.toggleExpanded()}></sl-icon-button>
+        }
       </sl-tooltip>
     );
   }

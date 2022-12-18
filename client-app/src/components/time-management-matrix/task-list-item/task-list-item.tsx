@@ -18,6 +18,7 @@ export class TaskListItem {
   @State() tempColor;
 
   @Event() taskItemUpdated: EventEmitter;
+  @Event() deleteTaskItemSuccess: EventEmitter;
 
   @Watch('taskItem')
   taskItemChangeHanlder() {
@@ -60,13 +61,20 @@ export class TaskListItem {
 
   updateTaskItemColor(event) {
     console.log(`updateTaskItemColor() get called`);
-    this.taskItem.color = this.tempColor;
 
-    state.taskItemList.map(taskItem => {
-      if(taskItem.name === this.taskItem.name) {
-        taskItem.color = this.taskItem.color
-      }
-    });
+    if(this.tempColor !== this.taskItem.color) {
+      console.log(`task color change detected ${this.tempColor}`);
+     
+      this.taskItem.color = this.tempColor;
+
+      state.taskItemList.map(taskItem => {
+        if(taskItem.name === this.taskItem.name) {
+          taskItem.color = this.taskItem.color
+        }
+      });
+
+      this.taskItemUpdated.emit(this.taskItem);
+    }
 
     this.setEditable(false);
     event.stopPropagation();
@@ -76,8 +84,19 @@ export class TaskListItem {
     event.stopPropagation();
   }
 
-  updateTaskItem(event) {
+  updateTaskItemWithEnterKey(event) {
+    let text = event.target.value;
+    if(event.keyCode === 13) {
+      this.updateTaskItem(text);
+    }
+  }
+
+  updateTaskItemWithBlur(event) {
     let text = event.target.value.trim();
+    this.updateTaskItem(text);
+  }
+
+  updateTaskItem(text) {
     if(text !== this.taskItem.name) {
       
       console.log(`task name change detected! ${text}`);
@@ -86,10 +105,19 @@ export class TaskListItem {
           item.name = text;
         }
       });
-      //this.taskItem.name = text;
+      
       this.taskItemUpdated.emit(this.taskItem);
     }
     this.setEditable(false);
+  }
+
+  async deleteTaskItem() {
+    await fetch(`${state.timeManagementMatrixApi}/task-item/${this.taskItem._id}`, {
+      method: 'DELETE'
+    }).then(() => {
+      state.taskItemList = state.taskItemList.filter(item => item._id !== this.taskItem._id);
+      this.deleteTaskItemSuccess.emit(this.taskItem);
+    });
   }
 
   getStyleForTaskItem() {
@@ -102,13 +130,19 @@ export class TaskListItem {
   renderTaskItemBody() {
     if(this.editable) {
       return (
-        <div onClick={(event)=>{this.updateTaskItemColor(event)}}>
+        <div class="editableTaskItem"
+          onClick={(event)=>{this.updateTaskItemColor(event)}}>
           <sl-input value={this.taskItem.name}
             onClick={(event)=>this.preventEventBubble(event)}
-            onBlur={(event)=>this.updateTaskItem(event)}>
+            onKeyPress={(event)=>this.updateTaskItemWithEnterKey(event)}
+            onBlur={(event)=>this.updateTaskItemWithBlur(event)}>
           </sl-input>
           <sl-color-picker value={this.tempColor} label="Select a color"
             onClick={(event)=>this.preventEventBubble(event)}></sl-color-picker>
+          <sl-button variant="danger" style={{position: 'relative', top: '5px', left: '10px'}}
+            onClick={()=>this.deleteTaskItem()}>
+            Delete
+          </sl-button>
         </div>    
       )
     } else {

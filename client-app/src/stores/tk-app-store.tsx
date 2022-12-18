@@ -8,12 +8,12 @@ function getBaseUrl() {
 }
 
 function getTimeManagementApiPerEnvironment() {
-  return `${getBaseUrl()}bookmark-api`;
+  return `${getBaseUrl()}time-management-matrix-api`;
 }
 
 const { state, onChange } = createStore({
   baseUrl: getBaseUrl(),
-  bookmarkApi: getTimeManagementApiPerEnvironment(),
+  timeManagementMatrixApi: getTimeManagementApiPerEnvironment(),
   taskItemList: [],
   user: {
     email: ''

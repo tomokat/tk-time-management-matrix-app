@@ -20,10 +20,24 @@ export class AddTaskItem {
   }
 
   addNewTaskItem(newTaskItem) {
-    //TODO: make a call to REST API
-    state.taskItemList.push(newTaskItem);
-    
-    this.addTaskItemSuccess.emit();
+    //state.taskItemList.push(newTaskItem);
+    let requestData = {
+      name: newTaskItem.name,
+      zone: 0,
+      user: state.user.email
+    };
+
+    fetch(`${state.timeManagementMatrixApi}/task-item`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    }).then((res)=> {
+      console.log(`Successfully added label! ${JSON.stringify(res.json())}`);
+      //event.target.parentElement.value = '';
+      this.addTaskItemSuccess.emit();
+    });
   }
 
   render() {

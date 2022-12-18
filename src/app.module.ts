@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { configuration } from '../config/configuration';
 
 import { LabelModule } from './label/label.module';
+import { TaskItemModule } from './task-item/task-item.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { LabelModule } from './label/label.module';
       //rootPath: join(__dirname, '..', '../cdn-test'),
     }),
     MongooseModule.forRoot(process.env.dbConnect),
-    LabelModule],
+    LabelModule,
+    TaskItemModule],
   controllers: [AppController],
   providers: [AppService, GoogleStraetgy],
 })

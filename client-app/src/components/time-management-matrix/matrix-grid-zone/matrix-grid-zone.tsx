@@ -41,6 +41,7 @@ export class MatrixGridZone {
     let taskItem = JSON.parse(taskItemString);
 
     this.taskItemDrop.emit({
+      _id: taskItem._id,
       name: taskItem.name,
       color: taskItem.color,
       zoneFrom: taskItem.zone,
@@ -60,7 +61,6 @@ export class MatrixGridZone {
     return (
       <Host>
         <div class="gridZone"
-          //onDragStart={(event)=>this.handleDragStart(event)}
           onDragOver={(event)=>this.handleDragOver(event)}
           onDrop={(event)=>this.handleDrop(event)}>
             {this.renderTaskItemList()}
