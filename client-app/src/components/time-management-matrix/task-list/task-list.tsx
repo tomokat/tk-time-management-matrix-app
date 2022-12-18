@@ -12,6 +12,7 @@ export class TaskList {
   @State() taskItemList;
 
   @Event() taskItemDrop: EventEmitter;
+  @Event() taskItemLoaded: EventEmitter;
 
   componentWillLoad() {
     this.getTaskItemData();
@@ -30,15 +31,21 @@ export class TaskList {
   }
 
   async getTaskItemData() {
-    let response = await fetch(this.getDataUrl());
-    let json = await response.json();
+    // let response = await fetch(this.getDataUrl());
+    // let json = await response.json();
 
-    state.taskItemList = json;
-    this.taskItemList = [...json];
+    await fetch(this.getDataUrl())
+      .then(response => response.json())
+      .then(json => {
+        console.log(`got ${json.length} task item back`);
+        state.taskItemList = json;
 
-    let noZoneItemList = state.taskItemList.filter(item => item.zone === 0);
-    noZoneItemList = noZoneItemList.sort((a,b)=>a.name>b.name?1:-1);
-    this.taskItemList = [...noZoneItemList];
+        let noZoneItemList = state.taskItemList.filter(item => item.zone === 0);
+        noZoneItemList = noZoneItemList.sort((a,b)=>a.name>b.name?1:-1);
+        this.taskItemList = [...noZoneItemList];
+
+        this.taskItemLoaded.emit();
+      });
   }
   
   handleDragOver(event) {

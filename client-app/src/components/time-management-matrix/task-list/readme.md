@@ -7,9 +7,10 @@
 
 ## Events
 
-| Event          | Description | Type               |
-| -------------- | ----------- | ------------------ |
-| `taskItemDrop` |             | `CustomEvent<any>` |
+| Event            | Description | Type               |
+| ---------------- | ----------- | ------------------ |
+| `taskItemDrop`   |             | `CustomEvent<any>` |
+| `taskItemLoaded` |             | `CustomEvent<any>` |
 
 
 ## Methods

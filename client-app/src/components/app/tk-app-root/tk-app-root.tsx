@@ -98,6 +98,14 @@ export class AppRoot {
     }
   }
 
+  @Listen('taskItemLoaded')
+  async taskItemLoadedHandler() {
+    let matrixZoneList = document.querySelector('tk-matrix-grid').shadowRoot.querySelectorAll('tk-matrix-grid-zone');
+    for(let zoneIndex = 0; zoneIndex < matrixZoneList.length; zoneIndex++) {
+      this.callReloadMatrixGridZone(zoneIndex+1);
+    }
+  }
+
   @Listen('addTaskItemSuccess')
   async addTaskItemSuccessHandler() {
     this.callReloadTaskList();
