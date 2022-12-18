@@ -126,25 +126,29 @@ export class AppRoot {
     let taskZoneFrom = event.detail.zoneFrom;
     let taskZoneTo = event.detail.zoneTo;
 
-    console.log(`taskItemDropHanlder called for ${taskName} of color ${taskColor} moving from ${taskZoneFrom} to ${taskZoneTo}`);
+    console.log(`taskItemDropHanlder called for [${taskId}] ${taskName} of color ${taskColor} moving from ${taskZoneFrom} to ${taskZoneTo}`);
 
     if(taskZoneFrom === taskZoneTo) {
       console.log(`drag & drop from same place, nothing to do`);
       return;
     }
 
-    state.taskItemList.map(taskItem => {
-      if(taskItem._id === taskId) {
-        taskItem.zone = taskZoneTo;
-        taskItem.color = taskColor;
-
-        //let taskItemData = JSON.parse(event.detail);
-        this.updateTaskItemDBInstance(taskItem);
-      }
+    //update one instance
+    console.dir(state.taskItemList);
+    let targetTaskItem = state.taskItemList.find(taskItem => {
+      return taskItem._id === taskId
     });
 
-    this.updateZone(taskZoneFrom);
-    this.updateZone(taskZoneTo);
+    console.dir(targetTaskItem);
+
+    if(targetTaskItem) {
+      targetTaskItem.zone = taskZoneTo;
+      targetTaskItem.color = taskColor;
+      await this.updateTaskItemDBInstance(targetTaskItem);
+
+      this.updateZone(taskZoneFrom);
+      this.updateZone(taskZoneTo);
+    }
   }
 
   async updateTaskItemDBInstance(taskItemData) {
@@ -160,7 +164,7 @@ export class AppRoot {
   }
 
   updateZone(zone) {
-    if(!zone) {
+    if(zone === 0) {
       this.callReloadTaskList();
     } else {
       this.callReloadMatrixGridZone(zone);

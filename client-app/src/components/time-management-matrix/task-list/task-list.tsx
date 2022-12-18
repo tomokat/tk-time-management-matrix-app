@@ -37,7 +37,8 @@ export class TaskList {
     await fetch(this.getDataUrl())
       .then(response => response.json())
       .then(json => {
-        console.log(`got ${json.length} task item back`);
+        //console.log(`got ${JSON.stringify(json)} <<<<`);
+        console.dir(json);
         state.taskItemList = json;
 
         let noZoneItemList = state.taskItemList.filter(item => item.zone === 0);
