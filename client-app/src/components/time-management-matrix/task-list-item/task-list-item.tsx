@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, Watch } from '@stencil/core';
 
 import state from '../../../stores/tk-app-store';
 
@@ -22,6 +22,13 @@ export class TaskListItem {
   @Watch('taskItem')
   taskItemChangeHanlder() {
     this.tempColor = this.taskItem.color;
+  }
+
+  @Method()
+  async clearEdit() {
+    if(this.editable) {
+      this.updateTaskItemColor(null);
+    }
   }
 
   @Listen('sl-change')
@@ -50,11 +57,12 @@ export class TaskListItem {
     this.editable = flag;
   }
 
-  makeEditable() {
+  makeEditable(event) {
     if(!this.editable) {
       //this.setEditable(false);
       console.log(`makeEditable() called`);
       this.editable = true;
+      event.stopPropagation();
     }
   }
 
@@ -76,7 +84,9 @@ export class TaskListItem {
     }
 
     this.setEditable(false);
-    event.stopPropagation();
+    if(event) {
+      event.stopPropagation();
+    }
   }
 
   preventEventBubble(event) {
@@ -99,15 +109,32 @@ export class TaskListItem {
     if(text !== this.taskItem.name) {
       
       console.log(`task name change detected! ${text}`);
-      state.taskItemList.map(item => {
-        if(item.name === this.taskItem.name) {
-          item.name = text;
-        }
+      let targetTaskItem = state.taskItemList.find(taskItem => {
+        return taskItem._id === this.taskItem._id
       });
-      
-      this.taskItemUpdated.emit(this.taskItem);
+      if(targetTaskItem) {
+        targetTaskItem.name = text;
+        this.taskItemUpdated.emit(this.taskItem);
+      }
+      // state.taskItemList.map(item => {
+      //   if(item.name === this.taskItem.name) {
+      //     item.name = text;
+      //   }
+      // });
     }
     this.setEditable(false);
+  }
+
+  clearColor(event) {
+    // let targetTaskItem = state.taskItemList.find(taskItem => {
+    //   return taskItem._id === this.taskItem._id
+    // });
+    // if(targetTaskItem) {
+    //   this.tempColor = undefined;
+    //   //this.taskItemUpdated.emit(this.taskItem);
+    // }
+    this.tempColor = '';
+    event.stopPropagation();
   }
 
   async deleteTaskItem() {
@@ -138,6 +165,8 @@ export class TaskListItem {
           </sl-input>
           <sl-color-picker value={this.tempColor} label="Select a color"
             onClick={(event)=>this.preventEventBubble(event)}></sl-color-picker>
+          <sl-button variant="text" style={{position: 'relative', top: '5px'}}
+            onClick={(event)=>this.clearColor(event)}>Clear</sl-button>
           <sl-button variant="danger" style={{position: 'relative', top: '5px', left: '10px'}}
             onClick={()=>this.deleteTaskItem()}>
             Delete
@@ -155,7 +184,7 @@ export class TaskListItem {
     return (
       <div class="taskListItem" draggable={true}
         style={this.getStyleForTaskItem()}
-        onClick={()=>this.makeEditable()}
+        onClick={(event)=>this.makeEditable(event)}
         onDragStart={(event)=>this.handleDragStart(event)}
         onDragOver={(event)=>this.handleDragOver(event)}>
         {this.renderTaskItemBody()}

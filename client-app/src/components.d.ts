@@ -25,6 +25,7 @@ export namespace Components {
     interface TkTaskListBar {
     }
     interface TkTaskListItem {
+        "clearEdit": () => Promise<void>;
         "taskItem": any;
     }
 }

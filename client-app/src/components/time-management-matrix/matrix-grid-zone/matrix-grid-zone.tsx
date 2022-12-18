@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Host, h, Method, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State } from '@stencil/core';
 
 import state from '../../../stores/tk-app-store';
 
@@ -8,6 +8,8 @@ import state from '../../../stores/tk-app-store';
   shadow: true,
 })
 export class MatrixGridZone {
+
+  @Element() el;
 
   @Prop() zoneNumber : number;
   @Prop() zoneCaption;
@@ -57,10 +59,21 @@ export class MatrixGridZone {
     )
   }
 
+  clearAllEditWithinZone(event) {
+    console.log(`clearAllEditWithinZone() get called`);
+
+    let taskListItems = this.el.shadowRoot.querySelectorAll('tk-task-list-item');
+    console.log(`found ${taskListItems.length} items within zone ${this.zoneNumber}`);
+    taskListItems.forEach(taskListItem => {
+      taskListItem.clearEdit();
+    });
+  }
+
   render() {
     return (
       <Host>
         <div class="gridZone"
+          onClick={(event)=>this.clearAllEditWithinZone(event)}
           onDragOver={(event)=>this.handleDragOver(event)}
           onDrop={(event)=>this.handleDrop(event)}>
             {this.renderTaskItemList()}

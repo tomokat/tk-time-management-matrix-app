@@ -114,7 +114,7 @@ export class AppRoot {
   @Listen('taskItemUpdated')
   async taskItemUpdatedHandler(event) {
     let taskZone = event.detail.zone;
-    this.updateTaskItemDBInstance(event.detail);
+    await this.updateTaskItemDBInstance(event.detail);
     this.updateZone(taskZone);
   }
 
