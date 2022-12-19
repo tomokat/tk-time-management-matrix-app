@@ -24,6 +24,7 @@ graph TD;
   tk-app-root --> tk-task-list
   tk-app-root --> tk-matrix-grid
   tk-task-list --> tk-task-list-item
+  tk-task-list --> tk-task-list-filter
   tk-matrix-grid --> tk-matrix-grid-zone
   tk-matrix-grid-zone --> tk-task-list-item
   style tk-app-root fill:#f9f,stroke:#333,stroke-width:4px

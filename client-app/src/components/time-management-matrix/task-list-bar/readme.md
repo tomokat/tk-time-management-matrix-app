@@ -12,6 +12,7 @@
 | `bulkAddDialogClosed` |             | `CustomEvent<any>` |
 | `targetZoneUpdated`   |             | `CustomEvent<any>` |
 | `taskItemUpdated`     |             | `CustomEvent<any>` |
+| `themeChanged`        |             | `CustomEvent<any>` |
 
 
 ## Dependencies

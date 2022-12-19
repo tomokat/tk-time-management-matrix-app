@@ -7,9 +7,11 @@
 
 ## Properties
 
-| Property   | Attribute   | Description | Type  | Default     |
-| ---------- | ----------- | ----------- | ----- | ----------- |
-| `taskItem` | `task-item` |             | `any` | `undefined` |
+| Property       | Attribute        | Description | Type  | Default     |
+| -------------- | ---------------- | ----------- | ----- | ----------- |
+| `filterType`   | `filter-type`    |             | `any` | `undefined` |
+| `placedInZone` | `placed-in-zone` |             | `any` | `undefined` |
+| `taskItem`     | `task-item`      |             | `any` | `undefined` |
 
 
 ## Events

@@ -67,7 +67,7 @@ export class AppRoot {
   }
 
   @Listen('resize', {target: 'window'}) 
-  windowResizeHandler (event) {
+  windowResizeHandler () {
     this.adjustCSSVariables();
   }
 
