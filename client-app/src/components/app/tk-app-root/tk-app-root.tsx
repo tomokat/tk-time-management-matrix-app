@@ -144,10 +144,9 @@ export class AppRoot {
     if(targetTaskItem) {
       targetTaskItem.zone = taskZoneTo;
       targetTaskItem.color = taskColor;
-      await this.updateTaskItemDBInstance(targetTaskItem);
-
       this.updateZone(taskZoneFrom);
       this.updateZone(taskZoneTo);
+      this.updateTaskItemDBInstance(targetTaskItem);
     }
   }
 
