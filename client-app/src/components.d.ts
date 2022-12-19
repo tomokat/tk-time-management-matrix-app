@@ -20,12 +20,17 @@ export namespace Components {
         "zoneNumber": number;
     }
     interface TkTaskList {
+        "getTaskItemData": () => Promise<void>;
         "reloadTaskList": () => Promise<void>;
     }
     interface TkTaskListBar {
     }
+    interface TkTaskListFilter {
+    }
     interface TkTaskListItem {
         "clearEdit": () => Promise<void>;
+        "filterType": any;
+        "placedInZone": any;
         "taskItem": any;
     }
 }
@@ -48,6 +53,10 @@ export interface TkTaskListCustomEvent<T> extends CustomEvent<T> {
 export interface TkTaskListBarCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLTkTaskListBarElement;
+}
+export interface TkTaskListFilterCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLTkTaskListFilterElement;
 }
 export interface TkTaskListItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -96,6 +105,12 @@ declare global {
         prototype: HTMLTkTaskListBarElement;
         new (): HTMLTkTaskListBarElement;
     };
+    interface HTMLTkTaskListFilterElement extends Components.TkTaskListFilter, HTMLStencilElement {
+    }
+    var HTMLTkTaskListFilterElement: {
+        prototype: HTMLTkTaskListFilterElement;
+        new (): HTMLTkTaskListFilterElement;
+    };
     interface HTMLTkTaskListItemElement extends Components.TkTaskListItem, HTMLStencilElement {
     }
     var HTMLTkTaskListItemElement: {
@@ -110,6 +125,7 @@ declare global {
         "tk-matrix-grid-zone": HTMLTkMatrixGridZoneElement;
         "tk-task-list": HTMLTkTaskListElement;
         "tk-task-list-bar": HTMLTkTaskListBarElement;
+        "tk-task-list-filter": HTMLTkTaskListFilterElement;
         "tk-task-list-item": HTMLTkTaskListItemElement;
     }
 }
@@ -137,10 +153,16 @@ declare namespace LocalJSX {
         "onBulkAddDialogClosed"?: (event: TkTaskListBarCustomEvent<any>) => void;
         "onTargetZoneUpdated"?: (event: TkTaskListBarCustomEvent<any>) => void;
         "onTaskItemUpdated"?: (event: TkTaskListBarCustomEvent<any>) => void;
+        "onThemeChanged"?: (event: TkTaskListBarCustomEvent<any>) => void;
+    }
+    interface TkTaskListFilter {
+        "onFilterTypeUpdated"?: (event: TkTaskListFilterCustomEvent<any>) => void;
     }
     interface TkTaskListItem {
+        "filterType"?: any;
         "onDeleteTaskItemSuccess"?: (event: TkTaskListItemCustomEvent<any>) => void;
         "onTaskItemUpdated"?: (event: TkTaskListItemCustomEvent<any>) => void;
+        "placedInZone"?: any;
         "taskItem"?: any;
     }
     interface IntrinsicElements {
@@ -151,6 +173,7 @@ declare namespace LocalJSX {
         "tk-matrix-grid-zone": TkMatrixGridZone;
         "tk-task-list": TkTaskList;
         "tk-task-list-bar": TkTaskListBar;
+        "tk-task-list-filter": TkTaskListFilter;
         "tk-task-list-item": TkTaskListItem;
     }
 }
@@ -165,6 +188,7 @@ declare module "@stencil/core" {
             "tk-matrix-grid-zone": LocalJSX.TkMatrixGridZone & JSXBase.HTMLAttributes<HTMLTkMatrixGridZoneElement>;
             "tk-task-list": LocalJSX.TkTaskList & JSXBase.HTMLAttributes<HTMLTkTaskListElement>;
             "tk-task-list-bar": LocalJSX.TkTaskListBar & JSXBase.HTMLAttributes<HTMLTkTaskListBarElement>;
+            "tk-task-list-filter": LocalJSX.TkTaskListFilter & JSXBase.HTMLAttributes<HTMLTkTaskListFilterElement>;
             "tk-task-list-item": LocalJSX.TkTaskListItem & JSXBase.HTMLAttributes<HTMLTkTaskListItemElement>;
         }
     }

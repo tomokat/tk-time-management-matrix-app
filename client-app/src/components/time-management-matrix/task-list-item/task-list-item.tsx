@@ -12,6 +12,8 @@ export class TaskListItem {
   @Element() el;
 
   @Prop({mutable: true}) taskItem;
+  @Prop() filterType;
+  @Prop() placedInZone;
 
   @State() editable = false;
   @State() tempColor;
@@ -58,6 +60,10 @@ export class TaskListItem {
   }
 
   makeEditable(event) {
+    if(!this.placedInZone) {
+      return;
+    }
+
     if(!this.editable) {
       //this.setEditable(false);
       console.log(`makeEditable() called`);
@@ -180,6 +186,18 @@ export class TaskListItem {
     }
   }
 
+  renderZoneIndicator() {
+    if(this.filterType === 'none' || this.placedInZone) {
+      return;
+    }
+
+    return (
+      <span>
+        <sl-badge pill style={{position:'relative', top:'-1px', left: '-3px'}}>{this.taskItem.zone}</sl-badge>
+      </span>
+    );
+  }
+
   renderAsCard() {
     return (
       <div class="taskListItem" draggable={true}
@@ -187,7 +205,10 @@ export class TaskListItem {
         onClick={(event)=>this.makeEditable(event)}
         onDragStart={(event)=>this.handleDragStart(event)}
         onDragOver={(event)=>this.handleDragOver(event)}>
-        {this.renderTaskItemBody()}
+        <span class="taskListItemContainer">
+          {this.renderZoneIndicator()}
+          {this.renderTaskItemBody()}
+        </span>
       </div>
     );
   }

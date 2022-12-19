@@ -21,6 +21,8 @@ export class AppRoot {
 
   componentDidLoad() {
     this.checkAuth();
+    this.adjustCSSVariables();
+    this.reflectTheme();
   }
 
   async checkAuth() {
@@ -39,6 +41,45 @@ export class AppRoot {
       console.log(`auth check failed with ${JSON.stringify(error)}`);
       this.authenticated = false;
     });
+  }
+
+  @Listen('themeChanged')
+  themeChangedHandler() {
+    this.reflectTheme();
+  }
+
+  setCSSVariable(key, value) {
+    document.documentElement.style.setProperty(key, value);
+  }
+
+  reflectTheme() {
+    if(state.theme === 'sun') {
+      this.setCSSVariable('--task-list-background-color', 'white');
+      this.setCSSVariable('--task-list-item-border-color', 'black');
+      this.setCSSVariable('--task-list-item-font-color', 'black');
+      this.setCSSVariable('--matrix-grid-zone-background-color', 'white');
+    } else {
+      this.setCSSVariable('--task-list-background-color', '#333');
+      this.setCSSVariable('--task-list-item-border-color', 'white');
+      this.setCSSVariable('--task-list-item-font-color', 'white');
+      this.setCSSVariable('--matrix-grid-zone-background-color', '#333');
+    }
+  }
+
+  @Listen('resize', {target: 'window'}) 
+  windowResizeHandler (event) {
+    this.adjustCSSVariables();
+  }
+
+  adjustCSSVariables() {
+    if(window.innerWidth > 1000) {
+      document.documentElement.style.setProperty('--sidemenu-width', '300px');
+      document.documentElement.style.setProperty('--header-height', '0px');
+      document.documentElement.style.setProperty('--footer-height', '50px');
+    } else {
+      document.documentElement.style.setProperty('--sidemenu-width', '0px');
+      document.documentElement.style.setProperty('--footer-height', '50px');
+    }
   }
 
   @Listen('requestLoginAsGuest')
@@ -108,7 +149,7 @@ export class AppRoot {
 
   @Listen('addTaskItemSuccess')
   async addTaskItemSuccessHandler() {
-    this.callReloadTaskList();
+    this.callGetTaskItemData();
   }
 
   @Listen('taskItemUpdated')
@@ -168,6 +209,12 @@ export class AppRoot {
     } else {
       this.callReloadMatrixGridZone(zone);
     }
+  }
+
+  async callGetTaskItemData() {
+    await customElements.whenDefined('tk-task-list');
+    let taskListElement = document.querySelector('tk-task-list');
+    taskListElement.getTaskItemData();
   }
 
   async callReloadTaskList() {
@@ -287,8 +334,8 @@ export class AppRoot {
 
         {/* Sidebar/menu */}
         <nav class="w3-sidebar w3-bar-block w3-white w3-animate-left w3-text-grey w3-collapse w3-top"
-          style={{zIndex: '3', fontWeight:'bold'}} id="mySidebar"><br/>
-          <h3 class="w3-center" style={{padding: '5px'}}>{this.getTitle()}</h3>
+          style={{zIndex: '3', fontWeight:'bold'}} id="mySidebar">
+          <h3 class="w3-center">{this.getTitle()}</h3>
           <div style={{padding:'5px'}}>
             <tk-task-list-bar></tk-task-list-bar>
             <tk-add-task-item></tk-add-task-item>
@@ -296,7 +343,7 @@ export class AppRoot {
           </div>
         </nav>
 
-        <header class="w3-container w3-top w3-hide-large w3-xlarge w3-padding-16">
+        <header class="w3-container w3-top w3-hide-large w3-xlarge w3-padding-4">
           <span class="w3-left w3-padding" style={{color:'white'}}>Time Management Matrix</span>
           <a href="javascript:void(0)" class="w3-right w3-button w3-white"
             onClick={()=>this.toggleSideMenu(!this.sideMenuOpen)}>☰</a>
@@ -314,7 +361,7 @@ export class AppRoot {
         </div>
 
         <div class="footer">
-          <p>Made with Shoelace, Stencil JS, Nest JS, Mongoose and MongoDB (v0.6.0)</p>
+          <p>Made with Shoelace, Stencil JS, Nest JS, Mongoose and MongoDB (v0.7.0)</p>
         </div>
       </AppLogin>
     );

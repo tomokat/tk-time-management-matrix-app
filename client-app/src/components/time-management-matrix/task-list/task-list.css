@@ -5,8 +5,10 @@
 
 .taskList {
   padding: 10px;
-  background-color:#333;
+  background-color: var(--task-list-background-color);
   min-height: 400px;
+  font-weight: normal;
+  border: solid 1px black;
 }
 
 .showHighlight {

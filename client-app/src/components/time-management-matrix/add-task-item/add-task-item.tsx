@@ -27,6 +27,8 @@ export class AddTaskItem {
       user: state.user.email
     };
 
+    state.taskItemList.push(requestData);
+
     fetch(`${state.timeManagementMatrixApi}/task-item`, {
       method: 'POST',
       headers: {

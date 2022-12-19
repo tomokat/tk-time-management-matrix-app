@@ -1,0 +1,7 @@
+:root {
+  --task-list-background-color: #333;
+  --task-list-item-border-color: white;
+  --task-list-item-font-color: white;
+
+  --matrix-grid-zone-background-color: #333; 
+}

@@ -29,7 +29,7 @@ export class MatrixGridZone {
 
   getTaskItemForZone() {
     let zoneItemList = state.taskItemList.filter(item => item.zone && item.zone === this.zoneNumber);
-    zoneItemList = zoneItemList.sort((a,b)=>a.name>b.name?1:-1);
+    //zoneItemList = zoneItemList.sort((a,b)=>a.name>b.name?1:-1);
     this.taskItemList = [...zoneItemList];
   }
 
@@ -54,7 +54,7 @@ export class MatrixGridZone {
   renderTaskItemList() {
     return (
       this.taskItemList.map(taskItem =>
-        <tk-task-list-item taskItem={taskItem}></tk-task-list-item>
+        <tk-task-list-item taskItem={taskItem} placedInZone={true}></tk-task-list-item>
       )
     )
   }

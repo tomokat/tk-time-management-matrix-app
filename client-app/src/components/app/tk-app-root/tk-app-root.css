@@ -1,9 +1,12 @@
-
 * {
+  box-sizing: border-box;
+}
+
+:root {
+  --header-height: 55px;
   --sidemenu-width: 300px;
   --footer-height: 50px;
   --footer-height-buffer: 20px;
-  box-sizing: border-box;
 }
 
 .row::after {
@@ -68,12 +71,12 @@ header {
 }
 
 .app-main {
-  max-height: calc(100vh - var(--footer-height) - var(--footer-height-buffer));
+  max-height: calc(100vh - var(--header-height) - var(--footer-height));
   /*margin-bottom: 120px;*/
 }
 
 .app-main .tk-bookmark-container {
-  max-height: calc(100vh - var(--footer-height) - var(--footer-height-buffer));
+  max-height: calc(100vh - var(--header-height) - var(--footer-height));
   overflow: auto;
 }
 

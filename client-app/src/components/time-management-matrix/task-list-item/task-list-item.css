@@ -4,12 +4,28 @@
 
 .taskListItem {
   padding: 5px;
-  border:1px solid white;
-  color: white;
+  border:1px solid var(--task-list-item-border-color);
+  color: var(--task-list-item-font-color);
   display: inline-block;
   min-width: 100px;
+
+  margin:3px;
+  border-left: solid 6px #58ad5a;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.22);
 }
 
 .editableTaskItem {
   max-width: 100%
+}
+
+.taskListItemContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.zoneIndicator {
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  font-size: 6px; 
 }

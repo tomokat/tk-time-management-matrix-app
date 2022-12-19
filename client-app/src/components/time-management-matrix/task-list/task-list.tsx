@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Host, h, State, Method } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, Listen, State, Method } from '@stencil/core';
 
 import state from '../../../stores/tk-app-store';
 
@@ -13,6 +13,14 @@ export class TaskList {
 
   @Event() taskItemDrop: EventEmitter;
   @Event() taskItemLoaded: EventEmitter;
+
+  filterType = 'none';
+
+  @Listen('filterTypeUpdated')
+  updateFilterTypeHanlder(event) {
+    this.filterType = event.detail;
+    this.updateListFromState();
+  }
 
   componentWillLoad() {
     this.getTaskItemData();
@@ -31,13 +39,19 @@ export class TaskList {
   }
 
   updateListFromState() {
-    let noZoneItemList = state.taskItemList.filter(item => item.zone === 0);
-    noZoneItemList = noZoneItemList.sort((a,b)=>a.name>b.name?1:-1);
-    this.taskItemList = [...noZoneItemList];
+    
+    if(this.filterType === 'none') {
+      let noZoneItemList = state.taskItemList.filter(item => item.zone === 0);
+      //noZoneItemList = noZoneItemList.sort((a,b)=>a.name>b.name?1:-1);
+      this.taskItemList = [...noZoneItemList];
+    } else if (this.filterType === 'all') {
+      this.taskItemList = [...state.taskItemList];
+    }
 
     this.taskItemLoaded.emit();
   }
 
+  @Method()
   async getTaskItemData() {
     // let response = await fetch(this.getDataUrl());
     // let json = await response.json();
@@ -73,7 +87,7 @@ export class TaskList {
   renderTaskItemList() {
     return (
       this.taskItemList.map(taskItem =>
-        <tk-task-list-item taskItem={taskItem}></tk-task-list-item>
+        <tk-task-list-item taskItem={taskItem} filterType={this.filterType}></tk-task-list-item>
       )
     )
   }
@@ -87,6 +101,7 @@ export class TaskList {
 
     return (
       <Host>
+        <tk-task-list-filter></tk-task-list-filter>
         <div class="taskList"
           onDragOver={(event)=>this.handleDragOver(event)} 
           onDrop={(event)=>this.handleDrop(event)}>

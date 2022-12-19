@@ -15,6 +15,7 @@ export class TaskListBar {
   @Event() taskItemUpdated: EventEmitter;
   @Event() targetZoneUpdated: EventEmitter;
   @Event() bulkAddDialogClosed: EventEmitter;
+  @Event() themeChanged: EventEmitter;
 
   @State() expanded;
   @State() targetZone = 0;
@@ -112,10 +113,9 @@ export class TaskListBar {
     this.expanded = !this.expanded;
     let sidemenuWidth = '300px';
     if(this.expanded) {
-      sidemenuWidth = '1000px';
+      sidemenuWidth = '100%';
     }
-    let sidemenuElement = document.querySelector('nav.w3-sidebar') as HTMLElement;
-    sidemenuElement.style.setProperty('--sidemenu-width', sidemenuWidth);
+    document.documentElement.style.setProperty('--sidemenu-width', sidemenuWidth);
   }
 
   renderZoneGroup() {
@@ -158,6 +158,22 @@ export class TaskListBar {
     );
   }
 
+  toggleTheme() {
+    if(state.theme === 'sun') {
+      state.theme = 'night';
+    } else {
+      state.theme = 'sun';
+    }
+    this.themeChanged.emit(state.theme);
+  }
+
+  getThemeIcon() {
+    if(state.theme === 'sun') {
+      return 'brightness-alt-high-fill';
+    }
+    return 'moon-fill';
+  }
+
   renderTaskListBar() {
     return (
       <sl-tooltip content="Bulk add" style={{fontSize:'32px'}} >
@@ -169,6 +185,9 @@ export class TaskListBar {
           : <sl-icon-button name="arrows-expand"
               onClick={()=>this.toggleExpanded()}></sl-icon-button>
         }
+        <sl-icon-button name={this.getThemeIcon()}
+          onClick={()=>this.toggleTheme()}>
+        </sl-icon-button>
       </sl-tooltip>
     );
   }

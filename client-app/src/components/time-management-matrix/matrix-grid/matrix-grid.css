@@ -3,16 +3,49 @@
 }
 
 .container {
-  margin: 20px auto;
-  width:100%;
-  height:calc(100vh - var(--footer-height) - var(--footer-height-buffer) -  50px);
-  background-color:#fff;
+  margin: 30px 0px 0px 30px;
+  width:calc(100vw - 60px - var(--sidemenu-width));
+  height:calc(100vh - var(--header-height) - var(--footer-height) - 70px);
+  background-color:#f1f1f1;
   display:grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   /* grid-row: auto auto; */
   grid-column-gap: 20px;
   grid-row-gap: 20px;
+}
+
+.matrixLegend {
+  font-size: 16px;
+  color: black;
+}
+
+.horizontalAxe .high {
+  position: absolute;
+  top: 10px;
+  left: calc(var(--sidemenu-width) + 40px);
+}
+
+.horizontalAxe .low {
+  position: absolute;
+  top: 10px;
+  left: calc((100vw - var(--sidemenu-width))/2 + var(--sidemenu-width) + 20px);
+}
+
+.verticalAxe .high {
+  position: absolute;
+  left: calc(var(--sidemenu-width) + 10px);
+  top: calc(50px + var(--header-height));
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.verticalAxe .low {
+  position: absolute;
+  left: calc(var(--sidemenu-width) + 10px);
+  top: calc((100vh - var(--header-height) - var(--footer-height))/2 + 40px);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 }
 
 /* .box{

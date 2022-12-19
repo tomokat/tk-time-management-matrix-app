@@ -3,6 +3,7 @@ import dotenvPlugin from 'rollup-plugin-dotenv';
 
 export const config: Config = {
   namespace: 'tk-time-management-matrix-components',
+  globalStyle: 'src/global/variables.css',
   outputTargets: [
     {
       type: 'dist',
