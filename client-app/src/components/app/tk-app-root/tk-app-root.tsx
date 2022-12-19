@@ -72,13 +72,13 @@ export class AppRoot {
   }
 
   adjustCSSVariables() {
-    if(window.innerWidth > 1000) {
+    document.documentElement.style.setProperty('--footer-height', '50px');
+    if(window.innerWidth > 992) {
       document.documentElement.style.setProperty('--sidemenu-width', '300px');
       document.documentElement.style.setProperty('--header-height', '0px');
-      document.documentElement.style.setProperty('--footer-height', '50px');
     } else {
       document.documentElement.style.setProperty('--sidemenu-width', '0px');
-      document.documentElement.style.setProperty('--footer-height', '50px');
+      document.documentElement.style.setProperty('--header-height', '50px');
     }
   }
 
@@ -354,8 +354,8 @@ export class AppRoot {
           style={{cursor:'pointer'}} title="close side menu" id="myOverlay"></div>
 
         <div class="w3-main app-main" style={{marginLeft:'300px'}}> 
-          <div class="w3-hide-large" style={{marginTop:'83px'}}></div>
-          <div class="tk-main-container" style={{padding: '5px'}}>
+          <div class="w3-hide-large" style={{marginTop:'52px'}}></div>
+          <div class="tk-main-container">
             <tk-matrix-grid></tk-matrix-grid>
           </div>
         </div>

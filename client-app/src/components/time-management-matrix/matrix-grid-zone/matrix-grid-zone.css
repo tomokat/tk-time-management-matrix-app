@@ -6,18 +6,14 @@
   padding: 5px;
   background-color: var(--matrix-grid-zone-background-color);
   height: 100%;
-  /* padding:20px; */
   border-radius:10px;
-  /* color:#fff; */
   z-index: 10;
   display:flex;
   flex-direction: column;
   flex-wrap: wrap;
-  /* align-items:center;
-  justify-content:center;
-  font-size:40px; */
-  /* max-width: 700px;
-  max-height: 300px; */
+  width: calc((100vw  - 100px - var(--sidemenu-width))/2);
+  height: calc((100vh - 100px - var(--header-height) - var(--footer-height)) / 2);
+  overflow-x: scroll;
 }
 
 .showHighlight {

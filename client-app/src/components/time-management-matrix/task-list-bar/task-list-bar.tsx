@@ -50,13 +50,11 @@ export class TaskListBar {
   }
 
   addNewTaskItem(newTaskName, newTaskZone) {
-    //state.taskItemList.push(newTaskItem);
     let requestData = {
       name: newTaskName,
       zone: newTaskZone,
       user: state.user.email
     };
-
     fetch(`${state.timeManagementMatrixApi}/task-item`, {
       method: 'POST',
       headers: {
