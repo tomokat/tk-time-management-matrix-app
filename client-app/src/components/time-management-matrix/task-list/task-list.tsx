@@ -20,7 +20,7 @@ export class TaskList {
 
   @Method()
   async reloadTaskList() {
-    this.getTaskItemData();
+    this.updateListFromState();
   }
 
   getDataUrl() {
@@ -28,6 +28,14 @@ export class TaskList {
       return `${state.timeManagementMatrixApi}/task-item/user/${state.user.email}`;
     }
     return `${state.timeManagementMatrixApi}/task-item/user/guest`;
+  }
+
+  updateListFromState() {
+    let noZoneItemList = state.taskItemList.filter(item => item.zone === 0);
+    noZoneItemList = noZoneItemList.sort((a,b)=>a.name>b.name?1:-1);
+    this.taskItemList = [...noZoneItemList];
+
+    this.taskItemLoaded.emit();
   }
 
   async getTaskItemData() {
@@ -41,11 +49,7 @@ export class TaskList {
         console.dir(json);
         state.taskItemList = json;
 
-        let noZoneItemList = state.taskItemList.filter(item => item.zone === 0);
-        noZoneItemList = noZoneItemList.sort((a,b)=>a.name>b.name?1:-1);
-        this.taskItemList = [...noZoneItemList];
-
-        this.taskItemLoaded.emit();
+        this.updateListFromState();
       });
   }
   

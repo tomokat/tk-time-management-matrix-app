@@ -314,7 +314,7 @@ export class AppRoot {
         </div>
 
         <div class="footer">
-          <p>Made with Shoelace, Stencil JS, Nest JS, Mongoose and MongoDB (v0.5.1)</p>
+          <p>Made with Shoelace, Stencil JS, Nest JS, Mongoose and MongoDB (v0.6.0)</p>
         </div>
       </AppLogin>
     );
