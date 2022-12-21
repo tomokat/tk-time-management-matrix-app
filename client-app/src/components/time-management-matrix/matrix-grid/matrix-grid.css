@@ -8,7 +8,7 @@
   /*80px = 2*30px (padding) + 20px (col gap) */
   width:calc(100vw - 80px - var(--sidemenu-width));
   /*80px = 2*30px (padding) + 20px (row gap) */
-  height:calc(100vh - 80px - var(--header-height) - var(--footer-height));
+  height:calc(100vh - 80px - var(--header-height) - var(--tab-matrix-height) - var(--footer-height));
   background-color:#f1f1f1;
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -25,27 +25,27 @@
 
 .horizontalAxe .high {
   position: absolute;
-  top: 5px;
+  top: 5px + var(--header-height);
   left: calc(var(--sidemenu-width) + 40px);
 }
 
 .horizontalAxe .low {
   position: absolute;
-  top: 5px;
+  top: 5px + var(--header-height);
   left: calc((100vw - var(--sidemenu-width))/2 + var(--sidemenu-width) + 20px);
 }
 
 .verticalAxe .high {
   position: absolute;
   left: calc(var(--sidemenu-width) + 5px);
-  top: calc(var(--header-height) + 100px);
+  top: calc(var(--header-height) + var(--tab-matrix-height) + 35px);
   writing-mode: vertical-rl;
 }
 
 .verticalAxe .low {
   position: absolute;
   left: calc(var(--sidemenu-width) + 5px);
-  top: calc((100vh - var(--header-height) - var(--footer-height))/2 + 40px);
+  top: calc((100vh - var(--header-height) - var(--tab-matrix-height) - var(--footer-height))/2 + (var(--header-height) + var(--tab-matrix-height) + 50px));
   writing-mode: vertical-rl;
 }
 

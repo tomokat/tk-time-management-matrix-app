@@ -72,6 +72,7 @@ export class AppRoot {
   }
 
   adjustCSSVariables() {
+    document.documentElement.style.setProperty('--tab-matrix-height', '75px');
     document.documentElement.style.setProperty('--footer-height', '50px');
     if(window.innerWidth > 992) {
       document.documentElement.style.setProperty('--sidemenu-width', '300px');
@@ -107,12 +108,25 @@ export class AppRoot {
     this.highlightTargetZone(targetZone);
   }
 
+  getMatrixZoneListElement() {
+    let tabMatrixGridElement = document.querySelector('tk-tab-matrix-grid') as HTMLElement;
+    if(!tabMatrixGridElement) {
+      return;
+    }
+    let tabMatrixGridShadowRoot = tabMatrixGridElement.shadowRoot;
+    let matrixGridElement = tabMatrixGridShadowRoot.querySelector('tk-matrix-grid');
+    if(!matrixGridElement) {
+      return;
+    }
+    return matrixGridElement.shadowRoot.querySelectorAll('tk-matrix-grid-zone');
+  }
+
   clearAllHighlight() {
     let itemListElement = document.querySelector('tk-task-list').shadowRoot.querySelector('.taskList');
     if(itemListElement) {
       itemListElement.classList.remove('showHighlight');
     }
-    let matrixZoneList = document.querySelector('tk-matrix-grid').shadowRoot.querySelectorAll('tk-matrix-grid-zone');
+    let matrixZoneList = this.getMatrixZoneListElement();
     for(let i = 0; i < matrixZoneList.length; i++) {
       let matrixZoneElement = matrixZoneList[i];
       if(matrixZoneElement) {
@@ -131,7 +145,7 @@ export class AppRoot {
         itemListElement.classList.add('showHighlight');
       }
     } else {
-      let matrixZoneList = document.querySelector('tk-matrix-grid').shadowRoot.querySelectorAll('tk-matrix-grid-zone');
+      let matrixZoneList = this.getMatrixZoneListElement();
       let targetZoneElement = matrixZoneList[targetZone-1].shadowRoot.querySelector('.gridZone');
       if(targetZoneElement) {
         targetZoneElement.classList.add('showHighlight');
@@ -141,7 +155,10 @@ export class AppRoot {
 
   @Listen('taskItemLoaded')
   async taskItemLoadedHandler() {
-    let matrixZoneList = document.querySelector('tk-matrix-grid').shadowRoot.querySelectorAll('tk-matrix-grid-zone');
+    let matrixZoneList = this.getMatrixZoneListElement();
+    if(!matrixZoneList) {
+      return;
+    }
     for(let zoneIndex = 0; zoneIndex < matrixZoneList.length; zoneIndex++) {
       this.callReloadMatrixGridZone(zoneIndex+1);
     }
@@ -149,6 +166,11 @@ export class AppRoot {
 
   @Listen('addTaskItemSuccess')
   async addTaskItemSuccessHandler() {
+    this.callGetTaskItemData();
+  }
+
+  @Listen('currentWorksheetUpdated')
+  async currentWorksheetUpdatedHandler() {
     this.callGetTaskItemData();
   }
 
@@ -224,7 +246,7 @@ export class AppRoot {
   }
 
   async callReloadMatrixGridZone(zone: number) {
-    let matrixZoneList = document.querySelector('tk-matrix-grid').shadowRoot.querySelectorAll('tk-matrix-grid-zone');
+    let matrixZoneList = this.getMatrixZoneListElement();
     matrixZoneList[zone-1].reloadMatrixGridZone();
   }
 
@@ -356,7 +378,7 @@ export class AppRoot {
         <div class="w3-main app-main" style={{marginLeft:'300px'}}> 
           <div class="w3-hide-large" style={{marginTop:'52px'}}></div>
           <div class="tk-main-container">
-            <tk-matrix-grid></tk-matrix-grid>
+            <tk-tab-matrix-grid></tk-tab-matrix-grid>
           </div>
         </div>
 

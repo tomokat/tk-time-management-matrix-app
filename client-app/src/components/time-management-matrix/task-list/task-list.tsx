@@ -32,10 +32,18 @@ export class TaskList {
   }
 
   getDataUrl() {
-    if(state.user.email) {
-      return `${state.timeManagementMatrixApi}/task-item/user/${state.user.email}`;
+    let dataUrl = `${state.timeManagementMatrixApi}/task-item/`;
+    if(state.currentWorksheet) {
+      dataUrl += `${state.currentWorksheet}/`;
+    } else {
+      dataUrl += 'base/';
     }
-    return `${state.timeManagementMatrixApi}/task-item/user/guest`;
+    if(state.user.email) {
+      dataUrl += `${state.user.email}`;
+    } else {
+      dataUrl += 'guest'
+    }
+    return dataUrl;
   }
 
   updateListFromState() {
@@ -53,13 +61,9 @@ export class TaskList {
 
   @Method()
   async getTaskItemData() {
-    // let response = await fetch(this.getDataUrl());
-    // let json = await response.json();
-
     await fetch(this.getDataUrl())
       .then(response => response.json())
       .then(json => {
-        //console.log(`got ${JSON.stringify(json)} <<<<`);
         console.dir(json);
         state.taskItemList = json;
 

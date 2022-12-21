@@ -52,6 +52,7 @@ export class TaskListBar {
   addNewTaskItem(newTaskName, newTaskZone) {
     let requestData = {
       name: newTaskName,
+      worksheet: state.currentWorksheet,
       zone: newTaskZone,
       user: state.user.email
     };
@@ -76,6 +77,7 @@ export class TaskListBar {
     taskItemList.map(item => {
       state.taskItemList.push({
         name: item,
+        worksheet: state.currentWorksheet,
         zone: this.targetZone
       });
       this.addNewTaskItem(item, this.targetZone);

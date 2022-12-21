@@ -27,6 +27,30 @@ export class TaskItemService {
       exec();
   }
 
+  findAllWithBaseWorksheetForUser(worksheet: string, user: string) {
+    return this.taskItemModel.find({
+        $or: [
+          {worksheet: { $exists: false}},
+          {worksheet: ''}
+        ]
+      }).
+      where('user').equals(user).
+      exec();
+
+
+    // return this.taskItemModel.find().
+    //   where('worksheet').equals(worksheet).
+    //   where('user').equals(user).
+    //   exec();
+  }
+
+  findAllByWorksheetForUser(worksheet: string, user: string) {
+    return this.taskItemModel.find().
+      where('worksheet').equals(worksheet).
+      where('user').equals(user).
+      exec();
+  }
+
   findOne(id: string) {
     return this.taskItemModel.findById(id);
   }

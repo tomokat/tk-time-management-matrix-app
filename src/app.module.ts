@@ -11,6 +11,7 @@ import { configuration } from '../config/configuration';
 
 import { LabelModule } from './label/label.module';
 import { TaskItemModule } from './task-item/task-item.module';
+import { WorksheetModule } from './worksheet/worksheet.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { TaskItemModule } from './task-item/task-item.module';
     }),
     MongooseModule.forRoot(process.env.dbConnect),
     LabelModule,
-    TaskItemModule],
+    TaskItemModule,
+    WorksheetModule],
   controllers: [AppController],
   providers: [AppService, GoogleStraetgy],
 })

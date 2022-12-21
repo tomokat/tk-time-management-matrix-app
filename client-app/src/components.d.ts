@@ -8,16 +8,21 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface TkAddTaskItem {
     }
+    interface TkAddWorksheet {
+    }
     interface TkAppRoot {
     }
     interface TkAppSplash {
     }
     interface TkMatrixGrid {
+        "worksheet": any;
     }
     interface TkMatrixGridZone {
         "reloadMatrixGridZone": () => Promise<void>;
         "zoneCaption": any;
         "zoneNumber": number;
+    }
+    interface TkTabMatrixGrid {
     }
     interface TkTaskList {
         "getTaskItemData": () => Promise<void>;
@@ -38,6 +43,10 @@ export interface TkAddTaskItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLTkAddTaskItemElement;
 }
+export interface TkAddWorksheetCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLTkAddWorksheetElement;
+}
 export interface TkAppSplashCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLTkAppSplashElement;
@@ -45,6 +54,10 @@ export interface TkAppSplashCustomEvent<T> extends CustomEvent<T> {
 export interface TkMatrixGridZoneCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLTkMatrixGridZoneElement;
+}
+export interface TkTabMatrixGridCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLTkTabMatrixGridElement;
 }
 export interface TkTaskListCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -69,6 +82,12 @@ declare global {
         prototype: HTMLTkAddTaskItemElement;
         new (): HTMLTkAddTaskItemElement;
     };
+    interface HTMLTkAddWorksheetElement extends Components.TkAddWorksheet, HTMLStencilElement {
+    }
+    var HTMLTkAddWorksheetElement: {
+        prototype: HTMLTkAddWorksheetElement;
+        new (): HTMLTkAddWorksheetElement;
+    };
     interface HTMLTkAppRootElement extends Components.TkAppRoot, HTMLStencilElement {
     }
     var HTMLTkAppRootElement: {
@@ -92,6 +111,12 @@ declare global {
     var HTMLTkMatrixGridZoneElement: {
         prototype: HTMLTkMatrixGridZoneElement;
         new (): HTMLTkMatrixGridZoneElement;
+    };
+    interface HTMLTkTabMatrixGridElement extends Components.TkTabMatrixGrid, HTMLStencilElement {
+    }
+    var HTMLTkTabMatrixGridElement: {
+        prototype: HTMLTkTabMatrixGridElement;
+        new (): HTMLTkTabMatrixGridElement;
     };
     interface HTMLTkTaskListElement extends Components.TkTaskList, HTMLStencilElement {
     }
@@ -119,10 +144,12 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "tk-add-task-item": HTMLTkAddTaskItemElement;
+        "tk-add-worksheet": HTMLTkAddWorksheetElement;
         "tk-app-root": HTMLTkAppRootElement;
         "tk-app-splash": HTMLTkAppSplashElement;
         "tk-matrix-grid": HTMLTkMatrixGridElement;
         "tk-matrix-grid-zone": HTMLTkMatrixGridZoneElement;
+        "tk-tab-matrix-grid": HTMLTkTabMatrixGridElement;
         "tk-task-list": HTMLTkTaskListElement;
         "tk-task-list-bar": HTMLTkTaskListBarElement;
         "tk-task-list-filter": HTMLTkTaskListFilterElement;
@@ -133,17 +160,24 @@ declare namespace LocalJSX {
     interface TkAddTaskItem {
         "onAddTaskItemSuccess"?: (event: TkAddTaskItemCustomEvent<any>) => void;
     }
+    interface TkAddWorksheet {
+        "onAddWorksheetSuccess"?: (event: TkAddWorksheetCustomEvent<any>) => void;
+    }
     interface TkAppRoot {
     }
     interface TkAppSplash {
         "onRequestLoginAsGuest"?: (event: TkAppSplashCustomEvent<any>) => void;
     }
     interface TkMatrixGrid {
+        "worksheet"?: any;
     }
     interface TkMatrixGridZone {
         "onTaskItemDrop"?: (event: TkMatrixGridZoneCustomEvent<any>) => void;
         "zoneCaption"?: any;
         "zoneNumber"?: number;
+    }
+    interface TkTabMatrixGrid {
+        "onCurrentWorksheetUpdated"?: (event: TkTabMatrixGridCustomEvent<any>) => void;
     }
     interface TkTaskList {
         "onTaskItemDrop"?: (event: TkTaskListCustomEvent<any>) => void;
@@ -167,10 +201,12 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "tk-add-task-item": TkAddTaskItem;
+        "tk-add-worksheet": TkAddWorksheet;
         "tk-app-root": TkAppRoot;
         "tk-app-splash": TkAppSplash;
         "tk-matrix-grid": TkMatrixGrid;
         "tk-matrix-grid-zone": TkMatrixGridZone;
+        "tk-tab-matrix-grid": TkTabMatrixGrid;
         "tk-task-list": TkTaskList;
         "tk-task-list-bar": TkTaskListBar;
         "tk-task-list-filter": TkTaskListFilter;
@@ -182,10 +218,12 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "tk-add-task-item": LocalJSX.TkAddTaskItem & JSXBase.HTMLAttributes<HTMLTkAddTaskItemElement>;
+            "tk-add-worksheet": LocalJSX.TkAddWorksheet & JSXBase.HTMLAttributes<HTMLTkAddWorksheetElement>;
             "tk-app-root": LocalJSX.TkAppRoot & JSXBase.HTMLAttributes<HTMLTkAppRootElement>;
             "tk-app-splash": LocalJSX.TkAppSplash & JSXBase.HTMLAttributes<HTMLTkAppSplashElement>;
             "tk-matrix-grid": LocalJSX.TkMatrixGrid & JSXBase.HTMLAttributes<HTMLTkMatrixGridElement>;
             "tk-matrix-grid-zone": LocalJSX.TkMatrixGridZone & JSXBase.HTMLAttributes<HTMLTkMatrixGridZoneElement>;
+            "tk-tab-matrix-grid": LocalJSX.TkTabMatrixGrid & JSXBase.HTMLAttributes<HTMLTkTabMatrixGridElement>;
             "tk-task-list": LocalJSX.TkTaskList & JSXBase.HTMLAttributes<HTMLTkTaskListElement>;
             "tk-task-list-bar": LocalJSX.TkTaskListBar & JSXBase.HTMLAttributes<HTMLTkTaskListBarElement>;
             "tk-task-list-filter": LocalJSX.TkTaskListFilter & JSXBase.HTMLAttributes<HTMLTkTaskListFilterElement>;

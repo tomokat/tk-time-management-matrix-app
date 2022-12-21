@@ -6,6 +6,7 @@
 :root {
   --header-height: 55px;
   --sidemenu-width: 300px;
+  --tab-matrix-height: 65px;
   --footer-height: 50px;
   --footer-height-buffer: 20px;
 }

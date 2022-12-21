@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core';
+import { Component, Host, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'tk-matrix-grid',
@@ -7,7 +7,7 @@ import { Component, Host, h } from '@stencil/core';
 })
 export class MatrixGrid {
 
-  // @Prop() row = 2;
+  @Prop() worksheet;
   // @Prop() colSize = 2;
 
   renderMatrixGrid() {
@@ -29,16 +29,20 @@ export class MatrixGrid {
     );
   }
 
+  findLegend(key) {
+    return this.worksheet.legends.find(legend => legend.key === key).value;
+  }
+
   renderMatrixLegend() {
     return (
       <div class="matrixLegend">
         <div class="horizontalAxe">
-          <div class="high">Urgent</div>
-          <div class="low">Not Urgent</div>
+          <div class="high">{this.findLegend('horizontal-high')}</div>
+          <div class="low">{this.findLegend('horizontal-low')}</div>
         </div>
         <div class="verticalAxe">
-          <div class="high">Important</div>
-          <div class="low">Not Important</div>
+          <div class="high">{this.findLegend('vertical-high')}</div>
+          <div class="low">{this.findLegend('vertical-low')}</div>
         </div>
       </div>
     );

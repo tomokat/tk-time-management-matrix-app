@@ -17,14 +17,32 @@ export class TaskItemController {
     return this.taskItemService.findAll();
   }
 
-  @Get('/user/guest')
-  findAllForGuest() {
-    return this.taskItemService.findAllByUser('');
+  // @Get('/user/guest')
+  // findAllForGuest() {
+  //   return this.taskItemService.findAllByUser('');
+  // }
+
+  @Get('/base/guest')
+  findAllByBaseForGuest() {
+    return this.taskItemService.findAllWithBaseWorksheetForUser('', '');
   }
 
-  @Get('/user/:user')
-  findAllByUser(@Param('user') user: string) {
-    return this.taskItemService.findAllByUser(user);
+  @Get('/base/:user')
+  findAllByBaseForUser(@Param('user') user : string) {
+    return this.taskItemService.findAllWithBaseWorksheetForUser('', user);
+  }
+
+  @Get('/:worksheet/guest')
+  findAllByWorksheetForGuest(
+    @Param('worksheet') worksheet : string) {
+    return this.taskItemService.findAllByWorksheetForUser(worksheet, '');
+  }
+
+  @Get('/:worksheet/:user')
+  findAllByWorksheetForUser(
+    @Param('worksheet') worksheet: string,
+    @Param('user') user: string) {
+    return this.taskItemService.findAllByWorksheetForUser(worksheet, user);
   }
 
   @Get(':id')

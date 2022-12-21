@@ -22,6 +22,8 @@ function getValueFromLocalStorage(key, defaultValue) {
 const { state, onChange } = createStore({
   baseUrl: getBaseUrl(),
   timeManagementMatrixApi: getTimeManagementApiPerEnvironment(),
+  currentWorksheet: '',
+  worksheetList: [],
   taskItemList: [],
   theme: getValueFromLocalStorage('theme', 'night'),
   user: {

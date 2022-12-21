@@ -23,6 +23,7 @@ export class AddTaskItem {
     //state.taskItemList.push(newTaskItem);
     let requestData = {
       name: newTaskItem.name,
+      worksheet: state.currentWorksheet,
       zone: 0,
       user: state.user.email
     };

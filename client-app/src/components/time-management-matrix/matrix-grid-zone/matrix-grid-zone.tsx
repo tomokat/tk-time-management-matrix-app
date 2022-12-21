@@ -28,7 +28,9 @@ export class MatrixGridZone {
   }
 
   getTaskItemForZone() {
-    let zoneItemList = state.taskItemList.filter(item => item.zone && item.zone === this.zoneNumber);
+    let zoneItemList = state.taskItemList.filter(item => {
+      return item.zone && item.zone === this.zoneNumber
+    });
     //zoneItemList = zoneItemList.sort((a,b)=>a.name>b.name?1:-1);
     this.taskItemList = [...zoneItemList];
   }
@@ -52,6 +54,10 @@ export class MatrixGridZone {
   }
 
   renderTaskItemList() {
+    // if(!this.taskItemList) {
+    //   return;
+    // }
+    
     return (
       this.taskItemList.map(taskItem =>
         <tk-task-list-item taskItem={taskItem} placedInZone={true}></tk-task-list-item>
@@ -70,6 +76,7 @@ export class MatrixGridZone {
   }
 
   render() {
+    console.log(`matrixGridZone render() zone: ${this.zoneNumber} called with ${this.taskItemList.length} task item`);
     return (
       <Host>
         <div class="gridZone"
@@ -78,9 +85,6 @@ export class MatrixGridZone {
           onDrop={(event)=>this.handleDrop(event)}>
             {this.renderTaskItemList()}
         </div>
-        {/* <div class="overlay">
-          <div>{this.zoneCaption}</div>
-        </div> */}
       </Host>
     );
   }

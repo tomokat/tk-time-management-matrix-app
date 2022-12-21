@@ -5,11 +5,18 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property    | Attribute   | Description | Type  | Default     |
+| ----------- | ----------- | ----------- | ----- | ----------- |
+| `worksheet` | `worksheet` |             | `any` | `undefined` |
+
+
 ## Dependencies
 
 ### Used by
 
- - [tk-app-root](../../app/tk-app-root)
+ - [tk-tab-matrix-grid](../tab-matrix-grid)
 
 ### Depends on
 
@@ -20,7 +27,7 @@
 graph TD;
   tk-matrix-grid --> tk-matrix-grid-zone
   tk-matrix-grid-zone --> tk-task-list-item
-  tk-app-root --> tk-matrix-grid
+  tk-tab-matrix-grid --> tk-matrix-grid
   style tk-matrix-grid fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+.matrixGridLegend {
+  width:calc(100vw - 25px - var(--sidemenu-width));
+  height: 100px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 20px;
+  column-gap: 20px;
+}
