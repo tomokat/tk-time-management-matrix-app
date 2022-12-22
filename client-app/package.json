@@ -1,6 +1,6 @@
 {
   "name": "tk-time-management-matrix-components",
-  "version": "1.0.0",
+  "version": "0.8.0",
   "description": "TK Time Management Matrix Components",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",

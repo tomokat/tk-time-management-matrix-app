@@ -38,7 +38,7 @@ export class TkAppSplash {
         </div>
 
         <div class="footer">
-          <p>Made with Shoelace, Stencil JS, Nest JS, Mongoose and MongoDB (v0.7.0)</p>
+          <p>Made with Shoelace, Stencil JS, Nest JS, Mongoose and MongoDB (v0.8.0)</p>
         </div>        
       </div>
     );
