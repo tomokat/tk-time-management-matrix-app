@@ -114,7 +114,7 @@ export class AppRoot {
       return;
     }
     let tabMatrixGridShadowRoot = tabMatrixGridElement.shadowRoot;
-    let matrixGridElement = tabMatrixGridShadowRoot.querySelector('tk-matrix-grid');
+    let matrixGridElement = tabMatrixGridShadowRoot.querySelector('sl-tab-panel[active] tk-matrix-grid');
     if(!matrixGridElement) {
       return;
     }

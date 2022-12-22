@@ -1,5 +1,5 @@
-import { SlTab } from '@shoelace-style/shoelace';
-import { Component, Event, EventEmitter, Host, h, Listen, State } from '@stencil/core';
+import { SlAlert, SlTab } from '@shoelace-style/shoelace';
+import { Component, Element, Event, EventEmitter, Host, h, Listen, State } from '@stencil/core';
 
 import state from '../../../stores/tk-app-store';
 
@@ -9,6 +9,8 @@ import state from '../../../stores/tk-app-store';
   shadow: true,
 })
 export class TabMatrixGrid {
+
+  @Element() el;
 
   @Event() currentWorksheetUpdated: EventEmitter;
 
@@ -20,10 +22,13 @@ export class TabMatrixGrid {
   async addWorksheetSuccessHandler(event) {
     await this.loadCustomWorksheetFromDB();
     console.log(`addWorksheetSuccess received ${event.detail._id}`);
-    let targetTabElement = this.findTabElementById(event.detail._id);
-    if(targetTabElement) {
-      targetTabElement.click();
-    }
+    let alert = this.el.shadowRoot.querySelector('sl-alert') as SlAlert;
+    alert.show();   
+
+    // let targetTabElement = this.findTabElementById(event.detail._id);
+    // if(targetTabElement) {
+    //   targetTabElement.click();
+    // }
   }
 
   @Listen('sl-tab-show')
@@ -112,7 +117,12 @@ export class TabMatrixGrid {
     return (
       <Host>
         <sl-tab-group>
-          <sl-tab slot="nav" panel="Base" closable>Base</sl-tab>
+          <sl-alert variant="primary" duration="3000">
+            <sl-icon slot="icon" name="check2-circle"></sl-icon>
+            Successfully created new worksheet!
+          </sl-alert>
+
+          <sl-tab slot="nav" panel="Base">Base</sl-tab>
           {this.renderCustomWorksheetTab()}
           <sl-tab slot="nav" panel="addNewTab">
             <sl-button variant="primary" size="small">New</sl-button>

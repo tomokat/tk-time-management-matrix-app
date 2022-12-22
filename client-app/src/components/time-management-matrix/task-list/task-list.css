@@ -6,6 +6,7 @@
 .taskList {
   padding: 10px;
   background-color: var(--task-list-background-color);
+  overflow: auto;
   min-height: 400px;
   height: calc(100vh - var(--header-height) - var(--footer-height) - 250px);
   font-weight: normal;

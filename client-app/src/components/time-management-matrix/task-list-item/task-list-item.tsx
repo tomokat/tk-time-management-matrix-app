@@ -217,6 +217,8 @@ export class TaskListItem {
     if(!this.taskItem) {
       return;
     }
+    
+    //console.log(`about to render taskItem ${this.taskItem.name}`);
 
     return (
       <Host>
