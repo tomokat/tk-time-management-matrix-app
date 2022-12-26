@@ -52,6 +52,7 @@ export class TabMatrixGrid {
           targetWorksheet = worksheet;
         }
       });
+      console.dir(targetWorksheet);
       this.removeActiveTabAndPaenl(targetPanel);
       this.customWorksheetList = [...this.customWorksheetList];
       // if(targetWorksheet) {

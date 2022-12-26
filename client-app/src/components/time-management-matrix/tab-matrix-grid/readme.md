@@ -9,6 +9,7 @@
 
 | Event                     | Description | Type               |
 | ------------------------- | ----------- | ------------------ |
+| `closeWorksheetRequested` |             | `CustomEvent<any>` |
 | `currentWorksheetUpdated` |             | `CustomEvent<any>` |
 
 
