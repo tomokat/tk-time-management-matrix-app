@@ -115,7 +115,7 @@ export class TaskListBar {
     if(this.expanded) {
       sidemenuWidth = '100%';
     }
-    document.documentElement.style.setProperty('--sidemenu-width', sidemenuWidth);
+    document.documentElement.style.setProperty('--responsive-sidenav', sidemenuWidth);
   }
 
   renderZoneGroup() {

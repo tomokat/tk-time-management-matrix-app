@@ -72,8 +72,10 @@ export class AppRoot {
   }
 
   adjustCSSVariables() {
+    document.documentElement.style.setProperty('--responsive-sidenav', '300px');
     document.documentElement.style.setProperty('--tab-matrix-height', '75px');
     document.documentElement.style.setProperty('--footer-height', '50px');
+
     if(window.innerWidth > 992) {
       document.documentElement.style.setProperty('--sidemenu-width', '300px');
       document.documentElement.style.setProperty('--header-height', '0px');
@@ -358,7 +360,7 @@ export class AppRoot {
         <nav class="w3-sidebar w3-bar-block w3-white w3-animate-left w3-text-grey w3-collapse w3-top"
           style={{zIndex: '3', fontWeight:'bold'}} id="mySidebar">
           <h3 class="w3-center">{this.getTitle()}</h3>
-          <div style={{padding:'5px'}}>
+          <div style={{padding:'5px'}} class="side-nav">
             <tk-task-list-bar></tk-task-list-bar>
             <tk-add-task-item></tk-add-task-item>
             <tk-task-list></tk-task-list>
@@ -383,7 +385,7 @@ export class AppRoot {
         </div>
 
         <div class="footer">
-          <p>Made with Shoelace, Stencil JS, Nest JS, Mongoose and MongoDB (v0.8.0)</p>
+          <p>Made with Shoelace, Stencil JS, Nest JS, Mongoose and MongoDB (v0.8.1)</p>
         </div>
       </AppLogin>
     );

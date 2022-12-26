@@ -5,6 +5,7 @@
 
 :root {
   --header-height: 55px;
+  --responsive-sidenav: 300px;
   --sidemenu-width: 300px;
   --tab-matrix-height: 65px;
   --footer-height: 50px;
@@ -83,9 +84,13 @@ header {
 }
 
 nav.w3-sidebar {
-  width: var(--sidemenu-width);
+  width: var(--responsive-sidenav);
   max-height: calc(100vh - var(--footer-height));
 }
+
+/* .side-nav {
+  width: var(--sidemenu-width);
+} */
 
 .footer {
   position: fixed;

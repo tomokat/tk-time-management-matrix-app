@@ -1,4 +1,4 @@
-import { SlAlert, SlTab } from '@shoelace-style/shoelace';
+import { SlAlert, SlTab, SlTabGroup } from '@shoelace-style/shoelace';
 import { Component, Element, Event, EventEmitter, Host, h, Listen, State } from '@stencil/core';
 
 import state from '../../../stores/tk-app-store';
@@ -13,7 +13,9 @@ export class TabMatrixGrid {
   @Element() el;
 
   @Event() currentWorksheetUpdated: EventEmitter;
+  @Event() closeWorksheetRequested: EventEmitter;
 
+  @State() isWorksheetManagerVisible: boolean;
   @State() customWorksheetList;
 
   baseWorksheet;
@@ -38,12 +40,60 @@ export class TabMatrixGrid {
     this.currentWorksheetUpdated.emit();
   }
 
+  @Listen('sl-close')
+  handleSlClose(event) {
+    if(event.path[0].tagName.toLowerCase() === 'sl-tab') {
+      let targetPanel = event.path[0].panel;
+      console.log(`attempt to close ${targetPanel}`);
+      let targetWorksheet;
+      this.customWorksheetList.map(worksheet => {
+        if(worksheet._id === targetPanel) {
+          worksheet.isOpen = false;
+          targetWorksheet = worksheet;
+        }
+      });
+      this.removeActiveTabAndPaenl(targetPanel);
+      this.customWorksheetList = [...this.customWorksheetList];
+      // if(targetWorksheet) {
+      //   this.closeWorksheetRequested.emit({
+      //     _id: targetPanel,
+      //     isOpen: false
+      //   });
+      // }
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
+
+  removeActiveTabAndPaenl(targetPanel) {
+    const tab = this.findTabElementById(targetPanel);
+    const tabPanel = this.findTabPanelById(targetPanel);
+
+    if(tab.active) {
+      const tabGroupElement = this.el.shadowRoot.querySelector('sl-tab-group') as SlTabGroup;
+      if(tabGroupElement) {
+        tabGroupElement.show('Base');
+      }
+    }
+
+    tab.remove();
+    tabPanel.remove();
+  }
+
   findTabElementById(id) {
     //document.querySelector('tk-tab-matrix-grid').shadowRoot.querySelector('sl-tab[panel="63a217461da95fb18b84dbd1"]')
-    let tabElement = document.querySelector('tk-tab-matrix-grid');
+    const tabElement = document.querySelector('tk-tab-matrix-grid');
     if(tabElement) {
-      let targetTabElement = tabElement.shadowRoot.querySelector(`sl-tab[panel="${id}"]`) as SlTab;
+      const targetTabElement = tabElement.shadowRoot.querySelector(`sl-tab[panel="${id}"]`) as SlTab;
       return targetTabElement;
+    }
+  }
+
+  findTabPanelById(id) {
+    const tabElement = document.querySelector('tk-tab-matrix-grid');
+    if(tabElement) {
+      const targetTabPanelElement = tabElement.shadowRoot.querySelector(`sl-tab-panel[name="${id}"]`) as SlTab;
+      return targetTabPanelElement;
     }
   }
 
@@ -88,7 +138,9 @@ export class TabMatrixGrid {
 
     return (
       this.customWorksheetList.map(worksheet =>
-        <sl-tab slot="nav" panel={worksheet._id} closable>{worksheet.caption}</sl-tab>
+        worksheet.isOpen
+          ? <sl-tab slot="nav" panel={worksheet._id}>{worksheet.caption}</sl-tab>
+          : ''
       )
     )
   }
@@ -100,13 +152,50 @@ export class TabMatrixGrid {
 
     return (
       this.customWorksheetList.map(worksheet =>
-        <sl-tab-panel name={worksheet._id}>
-          <tk-matrix-grid worksheet={worksheet}></tk-matrix-grid>
-        </sl-tab-panel>
+        worksheet.isOpen
+          ? <sl-tab-panel name={worksheet._id}>
+             <tk-matrix-grid worksheet={worksheet}></tk-matrix-grid>
+            </sl-tab-panel>
+          : ''
       )
     )
   }
 
+  toggleIsWorksheetManagerVisible() {
+    this.isWorksheetManagerVisible = !this.isWorksheetManagerVisible;
+  }
+
+  setWorksheetIsOpen(worksheet, flag) {
+    worksheet.isOpen = flag;
+    this.customWorksheetList = [...this.customWorksheetList];
+  }
+
+  renderWorksheetManagerTab() {
+    if(!this.customWorksheetList) {
+      return;
+    }
+
+    return (
+      this.customWorksheetList.map(worksheet =>
+        <div class="worksheetManagerRow">
+          <span style={{fontSize: '20px'}}>
+            {worksheet.isOpen
+              ? <sl-tooltip content="Opened">
+                  <sl-icon-button name="door-open" label="Opened"
+                    onClick={()=>this.setWorksheetIsOpen(worksheet, false)}></sl-icon-button>
+                </sl-tooltip>
+              : <sl-tooltip content="Closed">
+                  <sl-icon-button name="door-closed" label="Closed"
+                    onClick={()=>this.setWorksheetIsOpen(worksheet, true)}></sl-icon-button>
+                </sl-tooltip>
+            }
+          </span>
+          <span>{worksheet.caption}</span>
+          <sl-button variant="danger">Delete</sl-button>
+        </div>
+      )
+    )
+  }
   
 
   render() {
@@ -123,9 +212,13 @@ export class TabMatrixGrid {
           </sl-alert>
 
           <sl-tab slot="nav" panel="Base">Base</sl-tab>
-          {this.renderCustomWorksheetTab()}
+            {this.renderCustomWorksheetTab()}
           <sl-tab slot="nav" panel="addNewTab">
             <sl-button variant="primary" size="small">New</sl-button>
+          </sl-tab>
+          <sl-tab  slot="nav" panel="worksheetManagerTab">
+            <sl-icon-button name="gear" label="Settings"
+              onClick={()=>this.toggleIsWorksheetManagerVisible()}></sl-icon-button>
           </sl-tab>
 
           <sl-tab-panel name="Base">
@@ -135,7 +228,9 @@ export class TabMatrixGrid {
           <sl-tab-panel name="addNewTab">
             <tk-add-worksheet></tk-add-worksheet>
           </sl-tab-panel>
-          
+          <sl-tab-panel name="worksheetManagerTab">
+            {this.renderWorksheetManagerTab()}
+          </sl-tab-panel>
         </sl-tab-group>
       </Host>
     );

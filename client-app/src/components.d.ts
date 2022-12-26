@@ -177,6 +177,7 @@ declare namespace LocalJSX {
         "zoneNumber"?: number;
     }
     interface TkTabMatrixGrid {
+        "onCloseWorksheetRequested"?: (event: TkTabMatrixGridCustomEvent<any>) => void;
         "onCurrentWorksheetUpdated"?: (event: TkTabMatrixGridCustomEvent<any>) => void;
     }
     interface TkTaskList {
